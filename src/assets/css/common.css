@@ -1,0 +1,174 @@
+
+*,html,body{
+    margin: 0;
+    padding: 0;
+}
+
+body{overflow:hidden;font-size:14px;padding: 0 !important;}
+
+/*系统名称*/
+#app-header-system  span{font-size:20px;font-weight:normal;}
+
+#sIedit .SecInfIndexA{width:60px;height:40px;padding:3px 5px;cursor:pointer;}
+
+.InfoBox{
+    text-align:left;
+}
+.InfoBox input,select{font-size:12px !important;}
+.tableHeadBg{
+
+    border-bottom: none;
+    overflow:hidden;
+}
+
+.pagination{
+    border-top:none;
+    padding:2px 5px;
+    text-align:right;
+    font-size:12px;
+}
+/* .el-container{
+  height: 100vh;
+} */
+.el-pagination__sizes .el-input .el-input__inner{font-size:12px;}
+.el-main{
+    padding:0 !important;
+}
+
+.float-right{float:right;}
+.el-form-item__label{font-size:14px}
+
+/*下拉选择框大小调整*/
+.el-select-dropdown li{height:25px;line-height:25px;}
+.el-scrollbar__view li,.el-select-dropdown li{font-size:12px;}
+
+.el-select-dropdown__item span { line-height: 25px!important;}
+
+/*按钮样式控制*/
+table button,#buttonBox button,.InfoBox button,.head-buttonBox button{padding: 6px 9px !important;font-size:12px;}
+/* 悬浮框样式 */
+.el-tooltip__popper.is-dark{
+  background: rgba(0,0,0,.8) ;
+  color: #fff
+}
+/*tabs页*/
+.el-tabs--border-card{box-shadow:none;}
+
+.el-radio__label{font-size:12px;}
+
+.head-buttonBox{
+    text-align:right;
+    padding:5px;
+}
+
+.Mborder{border:1px solid #dcdfe6}
+.MborderRadius5{border-radius:5px;}
+.padd5{padding:5px;}
+.padd10{padding:10px;}
+
+.el-loading-mask{z-index:9999999 !important;}
+.float-right{float:right;}
+
+#buttonBox,.buttonBox{padding:3px 5px;text-align:right;background:rgb(196, 220, 242);}
+.contentBox{padding:10px;height: calc(100% - 40px);overflow:hidden;overflow-y:auto;text-align:left;}
+
+.contentBox .el-tabs{height:calc(100% - 5px)}
+.contentBoxCheck{height:calc(100% - 8px) !important;}
+/*.contentBox .el-tabs__content{height: 400px !important;overflow: auto !important;}*/
+
+.borderBox {border: 1px solid #dcdfe6;}
+.borderBox-top-none {border-top:none;}
+
+textarea{font-family: Arial;}
+
+.el-form-item__error{
+    display: block;
+}
+.el-dialog{
+  width: 33%;
+}
+.el-dialog__header{
+  background:rgba(236,248,255,1);
+  padding: 20px 20px 10px;
+  /* border-bottom:1px solid #EEEEEE; */
+}
+.el-dialog__footer{
+  text-align: center;
+}
+/*滚动条*/
+/*.el-table__body-wrapper{overflow-y:auto !important;}*/
+
+/*选择人员*/
+.common-button-box{padding:10px;}
+.RadioSelect .el-checkbox__inner{border-radius:7px !important;}
+.RadioSelect .has-gutter .el-checkbox{display:none !important;}
+.MselectPerson .el-input-group__append{padding:0px !important;}
+.pagination{clear:both;}
+
+.el-image-viewer__close{
+  top: 26px;
+  right: 454px;
+  background: #ccc!important;
+}
+
+/*MEDA*/
+.cardBox .el-collapse-item__header {
+    padding: 3px 5px 3px 20px;
+    height: 26px;
+    line-height: 26px;
+    font-weight: bold;
+    background: rgb(196, 220, 242);
+}
+
+.cardBox .el-collapse-item__arrow {
+    line-height: 26px;
+}
+
+.cardBox .el-collapse-item__content {
+    padding-top: 10px;
+}
+.el-collapse{
+  border: 0;
+}
+.ProblemActive .el-tag .el-icon-close{display:none !important;}
+
+.loaddingFile{color:#409EFF;cursor:pointer;}
+
+/*下拉菜单*/
+.selinput{display: block;}
+/*子表*/
+.subform{
+    border: 1px solid #dcdfe6;
+    border-bottom: none;
+    padding: 10px;
+}
+.subtable{
+    background: #f3f3f3;
+    border: 1px solid #dcdfe6;
+    border-bottom: none;
+    overflow: hidden;
+    text-align: right;
+    padding: 5px;
+}
+.el-checkbox__label{font-size: 12px; }
+.addPageBox .InfoBox{height:calc(100% - 2px) !important;}
+.addPageBox .contentBox{height:calc(100% - 50px) !important;border: 1px solid #dbdbde;border-top:none;}
+
+.requireText>.el-form-item__label::before{content: '*';color: #f56c6c;margin-right: 4px;}
+
+.layTableDom .InfoBox{padding:0 !important;}
+
+.el-input.is-disabled .el-input__inner,.el-textarea.is-disabled .el-textarea__inner,.el-tag--info, .el-tag--info .el-tag__close,.el-checkbox__input.is-disabled+span.el-checkbox__label,.el-radio__input.is-disabled+span.el-radio__label,.el-range-editor.is-disabled input,.el-cascader__label{color:#606266 !important;}
+
+.el-tabs__header{
+  margin: 0;
+}
+.dialog-footer{
+  text-align: center;
+}
+/* 查询下拉icon  */
+.el-icon-d-arrow-left, .el-icon-d-arrow-right{
+    transform: rotate(90deg);
+    font-size: 15px;
+    cursor: pointer;
+}

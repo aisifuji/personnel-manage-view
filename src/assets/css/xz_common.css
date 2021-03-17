@@ -1,0 +1,582 @@
+* {
+  font-size: 14px;
+  font-family: "Microsoft YaHei,Arial";
+  margin: 0;
+  padding: 0;
+}
+
+ul li, ol li {
+  list-style-type: none;
+}
+
+html, body {
+  height: 100%;
+  overflow-y: hidden;
+}
+
+.color-333 {
+	color:#333;
+	 font-weight:bold;
+}
+.bg-color {
+  background-color: #F5F6FA;
+}
+
+.bg-color-btngroup {
+  background-color: #F5F6FA;
+}
+
+/**
+  浮动 清除浮动
+*/
+.f-left {
+  float: left;
+}
+
+.f-right {
+  float: right;
+}
+
+.clear-float {
+  clear: both;
+}
+
+/**
+ 内边距 外边距
+*/
+.pl-5 {
+  padding-left: 5px;
+}
+
+.pl-10 {
+  padding-left: 10px;
+}
+
+.pl-15 {
+  padding-left: 15px;
+}
+
+.pl-20 {
+  padding-left: 20px;
+}
+
+.pl-25 {
+  padding-left: 25px;
+}
+
+.pl-30 {
+  padding-left: 30px;
+}
+
+.pl-40 {
+  padding-left: 40px;
+}
+
+.pl-50 {
+  padding-top: 50px;
+}
+
+.pl-60 {
+  padding-left: 60px;
+}
+
+.pr5 {
+  padding-right: 5px;
+}
+
+.pr10 {
+  padding-right: 10px;
+}
+
+.pr25 {
+  padding-right: 25px;
+}
+
+.pr20 {
+  padding-right: 20px;
+}
+
+.pr25 {
+  padding-right: 25px;
+}
+
+.pr30 {
+  padding-right: 30px;
+}
+
+.pr35 {
+  padding-right: 35px;
+}
+
+.pr60 {
+  padding-right: 60px;
+}
+
+.pt5 {
+  padding-top: 5px;
+}
+
+.pt10 {
+  padding-top: 10px;
+}
+
+.pt12 {
+  padding-top: 12px;
+}
+
+.pt20 {
+  padding-top: 20px;
+}
+
+.pb-20 {
+  padding-bottom: 20px !important;
+}
+
+.ml-5 {
+  margin-left: 5px;
+}
+
+.ml-10 {
+  margin-left: 10px;
+}
+
+.ml-15 {
+  margin-left: 15px;
+}
+
+.ml-20 {
+  margin-left: 20px;
+}
+
+.ml-25 {
+  margin-left: 25px;
+}
+
+.ml-60 {
+  margin-left: 60px;
+}
+/*
+ 查看图标
+ * */
+.mr5{
+  	margin-right: 4px !important;
+    margin-left: -6px !important;
+}
+
+.mr10 {
+  margin-right: 10px;
+}
+
+.mr15 {
+  margin-right: 15px;
+}
+
+.mr20 {
+  margin-right: 20px;
+}
+
+.mr25 {
+  margin-right: 25px;
+}
+
+.mr30 {
+  margin-right: 30px;
+}
+
+.mb0 {
+  margin-bottom: 0 !important;
+}
+
+.mb10 {
+  margin-bottom: 10px;
+}
+
+.mb12 {
+  margin-bottom: 12px;
+}
+
+.mb20 {
+  margin-bottom: 20px;
+}
+
+.mb25 {
+  margin-bottom: 25px;
+}
+
+.mb30 {
+  margin-bottom: 30px;
+}
+
+.mt0 {
+  margin-top: 0;
+}
+
+.mt5 {
+  margin-top: 5px;
+}
+
+.mt10 {
+  margin-top: 10px;
+}
+
+.mt15 {
+  margin-top: 15px;
+}
+
+.mt20 {
+  margin-top: 20px;
+}
+
+.mt25 {
+  margin-top: 25px;
+}
+
+.mt30 {
+  margin-top: 30px;
+}
+
+.mt35 {
+  margin-top: 35px;
+}
+
+.mt40 {
+  margin-top: 40px;
+}
+
+/**
+  宽度100%  高度100%
+*/
+.height-100 {
+  height: 100%;
+}
+
+.width-100 {
+  width: 100%;
+}
+
+/**
+树形组件
+*/
+.xz_tree {
+  height: 100%;
+  background: rgba(255, 255, 255, 1);
+  padding-right: 10px;
+  overflow: auto;
+  /*box-shadow: 0 6px 7px 0px rgba(0, 39, 79, 0.1);*/
+  /*border-right: 1px solid #d0c9c9;*/
+}
+
+.tree_head_title {
+  padding-top: 20px;
+  text-align: left;
+  padding-left: 27px;
+  font-size: 16px;
+  color: #333;
+  position: relative;
+  font-weight: bold;
+  margin-left: -20px;
+}
+
+/*.tree_head_title:before {*/
+  /*content: '';*/
+  /*display: inline-block;*/
+  /*background: url("../images/nomal_title_squra.png") no-repeat 0 0;*/
+  /*position: absolute;*/
+  /*left: 0;*/
+  /*top: 20px;*/
+  /*width: 4px;*/
+  /*height: 24px;*/
+/*}*/
+
+.xz_tree .el-tree .el-tree-node {
+  padding-left: 12px;
+  margin-top: 20px;
+}
+
+.el-tree--highlight-current .el-tree-node.is-current > .el-tree-node__content {
+  background-color: rgb(235, 237, 245);
+}
+
+/*.xz_tree .el-tree-node__content > .el-tree-node__expand-icon {*/
+/*position: absolute !important;*/
+/*right: 20px !important;*/
+/*}*/
+
+/**
+  表格
+*/
+.xz_content {
+	padding:0 20px 0 20px;
+  height:100%;
+  background: rgba(255, 255, 255, 1);
+  /*box-shadow: 0px 6px 7px 0px rgba(0, 39, 79, 0.1);*/
+  /*height: 99%;*/
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.xz_table {
+  height: 600px;
+}
+
+/*.xz_table .el-table__body-wrapper {*/
+  /*height: 560px;*/
+  /*overflow-y: auto;*/
+/*}*/
+
+.el-table:before {
+  height: 0;
+}
+
+.el-table td, .el-table th {
+  padding: 8px 0 !important;
+}
+
+.el-table th {
+  color: #333;
+  font-weight: bold;
+}
+
+/*@media screen and (max-height: 768px) and (max-width: 1366px) {*/
+  /*.xz_table {*/
+    /*height: 444px;*/
+  /*}*/
+
+  /*.xz_table .el-table__body-wrapper{*/
+    /*height: 396px;*/
+    /*overflow-y: auto;*/
+  /*}*/
+/*}*/
+
+.el-table--striped .el-table__body tr.el-table__row--striped td {
+  background-color: #F5F6FA;
+}
+
+/*.el-table__body tr.current-row>td {*/
+/*background-color: #f19944 !important;*/
+/*}*/
+.el-table--enable-row-hover .el-table__body tr:hover > td {
+  background-color: rgb(235, 237, 245) !important;
+}
+
+/**
+按钮组
+*/
+/*.el-button{*/
+	/*border-radius:0 !important;*/
+/*}*/
+/*.xz_btn {*/
+  /*height: 40px;*/
+  /*line-height: 40px;*/
+ /*!* width: 92px;*!*/
+  /*text-align: center;*/
+  /*color: #000000;*/
+  /*font-size: 14px;*/
+
+  /*padding: 0 10px;*/
+/*}*/
+
+.xz_btn_nodelete {
+  color: #fff !important;
+  background: rgba(65, 86, 204, 1) !important;
+  border: none;
+}
+
+.xz_btn_nodelete:focus, .xz_btn_nodelete:hover {
+  color: #fff;
+  background-color: #4156cc;
+}
+
+.xz_btn_refresh {
+  background: rgba(65, 86, 204, 1) !important;
+  height: 30px;
+  padding: 0 !important;
+  text-align: center;
+  color: #fff !important;
+  line-height: 30px;
+  width: 70px;
+  margin-top:40px;
+}
+
+.xz_btn_refresh:focus, .xz_btn_refresh:hover {
+  color: #fff;
+  border-color: #c6e2ff;
+  background-color: #4156cc;
+}
+
+.xz_btn_delete {
+  color: #fff !important;
+  background: rgba(230, 69, 82, 1) !important;
+  border: none;
+}
+
+.xz_btn_delete:focus, .xz_btn_delete:hover {
+  color: #fff;
+  background-color: rgba(230, 69, 82, 1);
+}
+
+.el-button-group .x-btn-group {
+  background: rgba(245, 246, 250, 1) !important;
+  color: #333333 !important;
+  border: none;
+}
+
+.el-button-group .x-btn-group-active {
+  background-color: #4156CC !important;
+  color: #fff !important;
+}
+
+/*按钮下分割线*/
+.el-row-underline {
+  padding-bottom: 8px;
+  border-bottom: 2px solid #F5F6FA;
+}
+
+/*文字对齐方式*/
+.text-right {
+  text-align: right;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/*分页*/
+.xz-pagination {
+  float: left;
+  padding-left: 30px;
+  padding-bottom: 40px;
+  padding-top: 40px;
+}
+
+.el-pagination.is-background .el-pager li:not(.disabled).active {
+  background-color: #4156CC;
+}
+
+/*弹窗*/
+.dialog-type-column1 {
+  width: 30% !important;
+  margin-top: 0!important;
+}
+
+.dialog-type-column2 {
+  width: 50% !important;
+  margin-top: 0!important;
+}
+
+.dialog-type-column3 {
+  width: 65% !important;
+  margin-top: 0!important;
+}
+
+.el-dialog__header {
+  background-color: #f5f6fa;
+}
+
+.el-dialog__header .el-dialog__title {
+  color: #333;
+  font-size: 14px;
+}
+
+.el-dialog__body {
+  padding: 40px 50px 20px 20px;
+}
+
+.el-dialog__footer {
+  padding-top: 5.1vh;
+  padding-bottom: 5.1vh;
+  border-top: 1px solid #eae8e8;
+  text-align: center !important;
+  display: inline-block;
+  width: 100%;
+}
+
+/*弹窗内按钮*/
+.dialog_sure_btn {
+  width: 108px;
+  height: 40px;
+  color: #fff !important;
+  font-size: 14px;
+  background: rgba(65, 86, 204, 1) !important;
+  border: none;
+}
+
+.dialog_sure_btn.is-disabled {
+  background-color: rgb(103, 120, 214) !important;
+  border-color: rgb(103, 120, 214);
+}
+
+.dialog_sure_btn:hover {
+  background: rgba(65, 86, 204, 1) !important;
+  color: #fff !important;
+}
+
+.dialog_back_btn {
+  width: 108px;
+  height: 40px;
+  background: rgba(255, 255, 255, 1) !important;
+  color: #333 !important;
+  font-size: 14px;
+}
+
+/**
+$message 信息提示框
+*/
+.xz-alert-common {
+  border: none;
+  border-radius: 2px !important;
+  top: 30% !important;
+  background-color: rgba(0, 0, 0, .6) !important;
+  color: #fff !important;
+}
+
+.xz-alert-common p.el-message__content {
+  color: #fff !important;
+}
+
+/**
+表单
+*/
+.el-form .el-form-item__content .el-select,
+.el-form .el-form-item__content .el-input-group,
+.el-form .el-form-item__content .el-input {
+  width: 100%;
+}
+
+.el-form-item .el-form-item__content .detail-span {
+  display: inline-block;
+  height: 100%;
+  width: 90%;
+  word-break: break-all;
+}
+
+/**
+复选框
+*/
+.el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+  background-color: #4156CC;
+  border-color: #4156CC;
+}
+/*
+ 文本框去掉圆角
+ * */
+.el-input__inner{
+	border-radius: 0 !important;
+}
+/*
+ 某弹窗中备注栏
+ * */
+.el-textarea__inner{
+	max-height: 40px !important;
+}
+
+ .el-dialog{
+  	top:8.2vh !important;
+    margin: auto;
+  }
+

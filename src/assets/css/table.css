@@ -1,0 +1,60 @@
+
+.JwTable {
+
+    overflow: auto;
+}
+/*
+table {
+    border-top: none;
+    border-right: none;
+}*/
+
+table th {
+    height: 35px;
+    line-height: 35px;
+    padding: 0 !important;
+    background: #F0F2F7 !important;
+}
+.el-table--border, .el-table--group {
+  /* border: 1px solid #EBEEF5; */
+  border: 0px;
+  border-left: 1px solid #ebeef5;
+  border-right: 1px solid #ebeef5;
+}
+.el-table__body, .el-table__footer, .el-table__header {
+  background: #F0F2F7;
+}
+/*table td, table th {
+    border-right: 1px solid #dbdbde;
+    border-bottom: 1px solid #dbdbde;
+}*/
+
+table td:last-child, table th:last-child {
+    border-right: none;
+}
+
+table td {
+    padding: 2px !important;
+    height: 33px;
+}
+
+table tbody tr:nth-child(even) {
+    background: #DFF2FF;
+}
+.el-table--striped .el-table__body tr.el-table__row--striped td {
+  background-color: #F9F9F9;
+}
+/*鼠标经过效果*/
+table tr:hover td {
+    background-color: #8BC2EA !important;
+}
+
+.InfoBox .el-form-item {
+    margin: 0 10px 3px 0;
+}
+
+.sup > label::before {
+    content: '*';
+    color: #f56c6c;
+    margin-right: 4px;
+}
