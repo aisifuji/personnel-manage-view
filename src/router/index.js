@@ -11,8 +11,8 @@ Vue.use(VueRouter)
 
 const routes = [
   // { path: '/', redirect: '/opinion' },
-  // { meta: { title: '首页' }, path: '/home', name: 'home', component: HomePage,
-  //   children: [
+  { meta: { title: '首页' }, path: '/home', name: 'home', component: HomePage,
+    children: [
   //     // 首页
   //     { path: '/index', name: 'index', component: index },
   //     { path: '/platformIndex', name: 'platformIndex', component:resolve => require(['~/pages/Index/platformIndex.vue'],resolve)}, // 平台运营首页
@@ -29,10 +29,10 @@ const routes = [
   //     // 系统管理
   //     { meta: { title: '系统管理 / 登录日志查询' }, path: '/dictionaryManage', name: 'dictionaryManage', component:resolve => require(['~/pages/systemManage/dictionaryManage.vue'],resolve)}, // 登录日志查询
   //     { meta: { title: '系统管理 / 数据字典组管理' }, path: '/dictionaryGoupManage', name: 'dictionaryGoupManage', component:resolve => require(['~/pages/systemManage/dictionaryGoupManage.vue'],resolve)}, // 数据字典组管理
-  //     { meta: { title: '系统管理 / 角色管理' }, path: '/roleManage', name: 'roleManage', component:resolve => require(['~/pages/systemManage/roleManage.vue'],resolve)}, // 角色管理
-  //     { meta: { title: '系统管理 / 用户管理' }, path: '/userManage', name: 'userManage', component:resolve => require(['~/pages/systemManage/userManage.vue'],resolve)}, // 用户管理
-  //     { meta: { title: '系统管理 / 部门管理' }, path: '/departmentManage', name: 'departmentManage', component:resolve => require(['~/pages/systemManage/departmentManage.vue'],resolve)}, // 部门管理
-  //     { meta: { title: '系统管理 / 资源管理' }, path: '/resourceManage', name: 'resourceManage', component:resolve => require(['~/pages/systemManage/resourceManage.vue'],resolve)}, // 资源管理
+      { meta: { title: '系统管理 / 角色管理' }, path: '/roleManage', name: 'roleManage', component:resolve => require(['../pages/system/roleManage.vue'],resolve)}, // 角色管理
+      { meta: { title: '系统管理 / 用户管理' }, path: '/userManage', name: 'userManage', component:resolve => require(['../pages/system/userManage.vue'],resolve)}, // 用户管理
+      { meta: { title: '系统管理 / 部门管理' }, path: '/departmentManage', name: 'departmentManage', component:resolve => require(['../pages/system/departmentManage.vue'],resolve)}, // 部门管理
+      { meta: { title: '系统管理 / 资源管理' }, path: '/resourceManage', name: 'resourceManage', component:resolve => require(['../pages/system/resourceManage.vue'],resolve)}, // 资源管理
   //     { meta: { title: '系统管理 / 二维码管理' }, path: '/qrCodeManage', name: 'qrCodeManage', component:resolve => require(['~/pages/systemManage/qrCodeManage/qrCodeManage.vue'],resolve)}, // 二维码管理
   //     { meta: { title: '系统管理 / 预警配置' }, path: '/earlyWarning', name: 'earlyWarning', component:resolve => require(['~/pages/systemManage/earlyWarning/earlyWarning.vue'],resolve)}, // 预警配置
   //     { meta: { title: '系统管理 / 微信用户管理' }, path: '/wxUserManage', name: 'wxUserManage', component:resolve => require(['~/pages/systemManage/wxUserManage/wxUserManage.vue'],resolve)}, // 微信用户管理
@@ -54,8 +54,8 @@ const routes = [
   //     { meta: { title: '统计分析 / 维修统计' }, path: '/repair', name: 'repair', component:resolve => require(['~/pages/StatisticsManage/repair.vue'],resolve)} ,// 维修统计
   //     { meta: { title: '统计分析 / 区域报修统计' }, path: '/regionRepair', name: 'regionRepair', component:resolve => require(['~/pages/StatisticsManage/regionRepair.vue'],resolve)} ,// 区域报修统计
   //
-  //   ]
-  // },
+    ]
+  },
   { path: '/login', name: 'login', component:resolve => require(['../pages/LoginPage.vue'],resolve)},
   // { path: '/bulletinBoard', name: 'bulletinBoard', component:resolve => require(['~/pages/bulletinBoard.vue'],resolve)}
   // { path: '/login', name: 'login', components: {
@@ -92,7 +92,8 @@ router.beforeEach((to, from, next) => {
       axios.get("sysResources/getMenu",r).then(res => {
         if (res.data.code == 200) {
           store.commit(TYPE.ROUTER_LIST, res.data.data);
-          setBtns(res.data.data);
+          next();
+          // setBtns(res.data.data);
         }
       });
     } else {

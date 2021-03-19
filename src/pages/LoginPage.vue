@@ -110,7 +110,7 @@
             sessionStorage.setItem('user_name', result.loginName)
             sessionStorage.setItem('userId',result.id)
             // this.$store.commit(TYPE.login,res.data.data)
-            this.$router.push({path:'/'})
+            this.$router.push({path:'/home'})
             // 在请求成功后把document.onkeydown置为undefined
             document.onkeydown = undefined;
               this.$message({
@@ -135,7 +135,6 @@
         this.srcImg1=`getCode?${data}`
         })
       }
-
     },
     created() {
       this.getVcode()

@@ -22,21 +22,13 @@ export default {
            * 生成面包屑的方法
            */
     getBreadcrumb() {
-      let matched = this.$route.matched.filter(item => item.name)
-      // console.log('111111',this.$route.matched)
-      const first = matched[0]
-      // if (first && first.name !== '首页') {
-      //   matched = [{path: '/home', meta: { title: '首页' }}].concat(matched)
-      // }
-      this.levelList=_.map(matched,(e)=>{
-        return{
-          name:e.meta.title,
-          path:e.path,
-          
-        }
-      })
-      // this.levelList = matched;
-      console.log('qqwww',this.levelList)
+            let matched = this.$route.matched.filter(item => item.name)
+            this.levelList=matched.map((e)=>{
+              return{
+                name:e.meta.title,
+                path:e.path,
+              }
+            })
     }
   },
   mounted() {
