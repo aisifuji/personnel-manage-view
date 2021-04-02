@@ -1,29 +1,29 @@
 <template>
   <div class="height-100 departmentManage">
     <el-row class="height-100 bg-color">
-      <el-col :span="4" class="height-100 pr5">
-        <div class="xz_tree">
-          <el-tree
-            ref="tree"
-            :props="defaultProps"
-            node-key="id"
-            :highlight-current="true"
-            :expand-on-click-node="false"
-            :check-on-click-node="true"
-            :data="treeData"
-            @node-click="handleNodeClick"
-          >
-          </el-tree>
-        </div>
-      </el-col>
+<!--      <el-col :span="4" class="height-100 pr5">-->
+<!--        <div class="xz_tree">-->
+<!--          <el-tree-->
+<!--            ref="tree"-->
+<!--            :props="defaultProps"-->
+<!--            node-key="id"-->
+<!--            :highlight-current="true"-->
+<!--            :expand-on-click-node="false"-->
+<!--            :check-on-click-node="true"-->
+<!--            :data="treeData"-->
+<!--            @node-click="handleNodeClick"-->
+<!--          >-->
+<!--          </el-tree>-->
+<!--        </div>-->
+<!--      </el-col>-->
       <el-col :span="20" class="height-100 pl-5">
         <div class="xz_content">
           <M-Table-List >
             <div slot="Info">
               <el-form :inline="true" :model="searchForm" label-width="40px" size="mini">
-                <el-form-item label="组织">
-                  <el-input v-model.trim="searchForm.orgName" :style="{width:formInputWidth}"
-                            placeholder="组织" clearable></el-input>
+                <el-form-item label="部门名称">
+                  <el-input v-model.trim="searchForm.deptName" :style="{width:formInputWidth}"
+                            placeholder="部门名称" clearable></el-input>
                 </el-form-item>
                 <el-form-item>
                   <el-form-item>
@@ -41,10 +41,10 @@
             <div slot="TableDom">
               <el-table :data="tableData" :stripe="true" :highlight-current-row="true" style="width: 100%;" border class="xz_table" ref="xzTable">
                 <el-table-column type="index" label="序号" width="55" align="center"></el-table-column>
-                <el-table-column prop="orgName" label="组织名称" min-width="120" align="center"></el-table-column>
-                <el-table-column prop="code" label="组织编码" min-width="100" align="center"></el-table-column>
-                <el-table-column prop="sort" label="排序值" min-width="100" align="center"></el-table-column>
-                <el-table-column prop="statusCode" label="状态" align="center" :formatter="stateCode"></el-table-column>
+                <el-table-column prop="deptName" label="部门名称" min-width="120" align="center"></el-table-column>
+                <el-table-column prop="deptCode" label="部门编码" min-width="100" align="center"></el-table-column>
+                <el-table-column prop="createTime" label="成立时间" align="center" ></el-table-column>
+                <el-table-column prop="statusCd" label="状态" align="center" :formatter="stateCode"></el-table-column>
                  <el-table-column label="操作" align="center" width="200">
                   <template slot-scope="scope">
                     <span>
@@ -67,32 +67,32 @@
       <el-dialog :title="'组织管理-新增'" :visible.sync="addDialog" :close-on-click-modal="false" custom-class="dialog-type-column1" @close="closed">
         <div class="dialog-form" :v-loading="loading">
           <el-form :model="ruleForm" ref="ruleForm" :rules="rules" label-position="right" label-width="80px">
-            <el-form-item label="上级部门：" prop="parentId">
-              <el-input placeholder="请选择上级组织" v-model="ruleForm.pidLabel" :style="inputWidth" @click.native="openPidBox" style="width: 100%;"></el-input>
-              <div class="pidList" v-show="pidBoxShow">
-                <el-tree
-                  ref="tree2"
-                  :props="defaultProps"
-                  node-key="id"
-                  :highlight-current="true"
-                  :expand-on-click-node="false"
-                  :check-on-click-node="true"
-                  :data="treeData"
-                  @node-click="handleNodeClick2">
-                </el-tree>
-              </div>
+<!--            <el-form-item label="上级部门：" prop="parentId">-->
+<!--              <el-input placeholder="请选择上级组织" v-model="ruleForm.pidLabel" :style="inputWidth" @click.native="openPidBox" style="width: 100%;"></el-input>-->
+<!--              <div class="pidList" v-show="pidBoxShow">-->
+<!--                <el-tree-->
+<!--                  ref="tree2"-->
+<!--                  :props="defaultProps"-->
+<!--                  node-key="id"-->
+<!--                  :highlight-current="true"-->
+<!--                  :expand-on-click-node="false"-->
+<!--                  :check-on-click-node="true"-->
+<!--                  :data="treeData"-->
+<!--                  @node-click="handleNodeClick2">-->
+<!--                </el-tree>-->
+<!--              </div>-->
+<!--            </el-form-item>-->
+            <el-form-item label="组织名称：" prop="deptName">
+              <el-input v-model.trim="ruleForm.deptName" :style="inputWidth" placeholder="请输入组织名称" style="width: 100%;" maxlength="32"></el-input>
             </el-form-item>
-            <el-form-item label="组织名称：" prop="orgName">
-              <el-input v-model.trim="ruleForm.orgName" :style="inputWidth" placeholder="请输入组织名称" style="width: 100%;" maxlength="32"></el-input>
+            <el-form-item label="组织编码：" prop="deptCode">
+              <el-input v-model.trim="ruleForm.deptCode" :style="inputWidth" placeholder="请输入组织编码" style="width: 100%;" maxlength="32"></el-input>
             </el-form-item>
-            <el-form-item label="组织编码：" prop="code">
-              <el-input v-model.trim="ruleForm.code" :style="inputWidth" placeholder="请输入组织编码" style="width: 100%;" maxlength="32"></el-input>
-            </el-form-item>
-            <el-form-item label="排序值：" prop="sort">
-              <el-input v-model.number.trim="ruleForm.sort" :style="inputWidth" placeholder="请输入数字排序值：" style="width: 100%;" maxlength="9"></el-input>
-            </el-form-item>
-            <el-form-item label="状态：" prop="statusCode" >
-              <el-select v-model="ruleForm.statusCode" :style="inputWidth" placeholder="请选择状态" style="width: 100%;">
+<!--            <el-form-item label="排序值：" prop="sort">-->
+<!--              <el-input v-model.number.trim="ruleForm.sort" :style="inputWidth" placeholder="请输入数字排序值：" style="width: 100%;" maxlength="9"></el-input>-->
+<!--            </el-form-item>-->
+            <el-form-item label="状态：" prop="statusCd" >
+              <el-select v-model="ruleForm.statusCd" :style="inputWidth" placeholder="请选择状态" style="width: 100%;">
                 <el-option label="启用" :value="0"></el-option>
                 <el-option label="停用" :value="1"></el-option>
               </el-select>
@@ -112,32 +112,32 @@
       <el-dialog :title="'组织管理-编辑'" :visible.sync="editDialog" :close-on-click-modal="false" custom-class="dialog-type-column1" @close="closed">
         <div class="dialog-form" :v-loading="loading">
           <el-form :model="ruleForm" ref="ruleForm" :rules="rules" label-position="right" label-width="80px">
-            <el-form-item label="上级组织：" prop="parentId">
-              <el-input placeholder="请选择上级组织" v-model="ruleForm.pidLabel" :style="inputWidth"  @click.native="openPidBox" style="width: 100%;"></el-input>
-              <div class="pidList" v-show="pidBoxShow">
-                <el-tree
-                  ref="tree2"
-                  :props="defaultProps"
-                  node-key="id"
-                  :highlight-current="true"
-                  :expand-on-click-node="false"
-                  :check-on-click-node="true"
-                  :data="treeData"
-                  @node-click="handleNodeClick2">
-                </el-tree>
-              </div>
+<!--            <el-form-item label="上级组织：" prop="parentId">-->
+<!--              <el-input placeholder="请选择上级组织" v-model="ruleForm.pidLabel" :style="inputWidth"  @click.native="openPidBox" style="width: 100%;"></el-input>-->
+<!--              <div class="pidList" v-show="pidBoxShow">-->
+<!--                <el-tree-->
+<!--                  ref="tree2"-->
+<!--                  :props="defaultProps"-->
+<!--                  node-key="id"-->
+<!--                  :highlight-current="true"-->
+<!--                  :expand-on-click-node="false"-->
+<!--                  :check-on-click-node="true"-->
+<!--                  :data="treeData"-->
+<!--                  @node-click="handleNodeClick2">-->
+<!--                </el-tree>-->
+<!--              </div>-->
+<!--            </el-form-item>-->
+            <el-form-item label="组织名称：" prop="deptName">
+              <el-input v-model.trim="ruleForm.deptName" :style="inputWidth" placeholder="请输入组织名称" style="width: 100%;" maxlength="32"></el-input>
             </el-form-item>
-            <el-form-item label="组织名称：" prop="orgName">
-              <el-input v-model.trim="ruleForm.orgName" :style="inputWidth" placeholder="请输入组织名称" style="width: 100%;" maxlength="32"></el-input>
+            <el-form-item label="组织编码：" prop="deptCode">
+              <el-input v-model.trim="ruleForm.deptCode" :style="inputWidth" placeholder="请输入组织编码" style="width: 100%;" maxlength="32"></el-input>
             </el-form-item>
-            <el-form-item label="组织编码：" prop="code">
-              <el-input v-model.trim="ruleForm.code" :style="inputWidth" placeholder="请输入组织编码" style="width: 100%;" maxlength="32"></el-input>
-            </el-form-item>
-            <el-form-item label="排序值：" prop="sort">
-              <el-input v-model.number.trim="ruleForm.sort" :style="inputWidth" placeholder="请输入组织名称" style="width: 100%;" maxlength="9"></el-input>
-            </el-form-item>
-            <el-form-item label="状态：" prop="statusCode" >
-              <el-select v-model="ruleForm.statusCode" :style="inputWidth" placeholder="请选择状态" style="width: 100%;">
+<!--            <el-form-item label="排序值：" prop="sort">-->
+<!--              <el-input v-model.number.trim="ruleForm.sort" :style="inputWidth" placeholder="请输入组织名称" style="width: 100%;" maxlength="9"></el-input>-->
+<!--            </el-form-item>-->
+            <el-form-item label="状态：" prop="statusCd" >
+              <el-select v-model="ruleForm.statusCd" :style="inputWidth" placeholder="请选择状态" style="width: 100%;">
                 <el-option label="启用" :value="0"></el-option>
                 <el-option label="停用" :value="1"></el-option>
               </el-select>
@@ -236,7 +236,7 @@
     created: function () {
       // this.getBtns();
       this.refreshData();
-      this.getTree();
+      // this.getTree();
     },
     computed: {
       btnList:function(){
@@ -316,9 +316,9 @@
         // Object.assign(this.searchForm, this.pagination);
         this.searchForm.pageNo=this.pagination.pageNo
         this.searchForm.pageSize=this.pagination.pageSize
-        this.$axios.post('/sysOrganization/findListOrganization', this.searchForm).then(function (res) {
+        this.$axios.post('/sysDept/queryPage', this.searchForm).then(function (res) {
           if(res.data.code==200){
-            that.tableData = res.data.data.rows;
+            that.tableData = res.data.data.dataList;
             that.pagination.total = res.data.data.total*1;
           }
         });
@@ -326,7 +326,7 @@
       // 新增
       addInfo(){
         this.addDialog = true; //弹窗显示
-        this.getTree();
+        // this.getTree();
         this.ruleForm={}
       },
       // 新增保存
@@ -340,7 +340,7 @@
               let params=this.ruleForm
               let that = this;
                 that.loading=true
-                this.$axios.post("/sysOrganization/saveOrganization", params).then(function(res) {
+                this.$axios.post("/sysDept/save", params).then(function(res) {
                   that.loading=false
                   if(res.data.code==200) {
                     that.addDialog = false;
@@ -366,7 +366,7 @@
       // 编辑
       editInfo(row){
         this.editDialog = true;//弹窗显示
-        this.getTree();
+        // this.getTree();
         this.ruleForm=Object.assign({}, row);
         if(row.parentId!=0){
           let node = this.$refs.tree.getNode(row.parentId);
@@ -383,7 +383,7 @@
               let params=this.ruleForm
             let that = this;
             that.loading=true
-            this.$axios.post("/sysOrganization/updateOrganization", params).then(function(res) {
+            this.$axios.post("/sysDept/update", params).then(function(res) {
                 that.loading=false
                 if(res.data.code==200) {
                   that.$message({
@@ -414,7 +414,7 @@
         type: "warning"
       }).then(() => {
           this.$axios
-            .post("/sysOrganization/deleteOrganization", { id: row.id })
+            .post("/sysDept/delete", { id: row.id })
             .then(res => {
               if (res.data.code==200) {
                 this.$message({
@@ -442,7 +442,7 @@
       },
 
       stateCode(row){
-        return row.statusCode=='0'?'启用':row.statusCode=='1'?'停用':''
+        return row.statusCd=='0'?'启用':row.statusCd=='1'?'停用':''
       },
       fommatetime: function (row) {
       var value=row.createTime

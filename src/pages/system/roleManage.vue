@@ -27,7 +27,7 @@
           <el-table-column prop="roleName" label="角色名称" min-width="150" align="center"></el-table-column>
           <el-table-column prop="roleCode" label="角色编码" min-width="100" align="center"></el-table-column>
           <!-- <el-table-column prop="statusCode" label="状态" align="center" min-width="100" :formatter="statusCode"></el-table-column> -->
-          <el-table-column prop="description" label="角色描述" min-width="100" align="center"></el-table-column>
+          <el-table-column prop="remark" label="角色描述" min-width="100" align="center"></el-table-column>
           <el-table-column prop="createTime" label="创建时间" align="center" min-width="100" :formatter="dateFormat"></el-table-column>
           <el-table-column prop="modifyTime" label="修改时间" align="center" min-width="100" :formatter="dateFormat" ></el-table-column>
            <el-table-column label="操作" align="center" width="400">
@@ -37,7 +37,7 @@
               <el-link type="danger" style='margin-right:5px' @click="handleDelete(scope.row)" >删除</el-link>
               <!-- <el-button type="info" style='margin-right:5px' @click="handleStop(scope.row)" v-if="btn.percode === 'state'">{{scope.row.statusCode == 0?'停用':'启用'}}</el-button> -->
               <el-link type="success" style='margin-right:5px' @click="permissionConfig(scope.row,1)" >功能权限</el-link>
-              <el-link type="success" @click="permissionConfig(scope.row,2)"  >数据权限</el-link>
+<!--              <el-link type="success" @click="permissionConfig(scope.row,2)"  >数据权限</el-link>-->
             </span>
           </template>
         </el-table-column>
@@ -61,14 +61,8 @@
                   <el-form-item label="角色编码：" prop="roleCode" >
                     <el-input placeholder="请输入角色编码" v-model.trim="ruleForm.roleCode"  maxlength="32" :style="inputWidth"></el-input>
                   </el-form-item>
-                  <!-- <el-form-item label="状态：" prop="statusCode" >
-                  <el-select v-model="ruleForm.statusCode" placeholder="请选择状态" >
-                    <el-option label="启用" :value="0"></el-option>
-                    <el-option label="停用" :value="1"></el-option>
-                  </el-select>
-                  </el-form-item> -->
-                  <el-form-item label="角色描述：" prop="description" >
-                    <el-input placeholder="请输入..." v-model="ruleForm.description" maxlength="100" :style="inputWidth"></el-input>
+                  <el-form-item label="角色描述：" prop="remark" >
+                    <el-input placeholder="请输入..." v-model="ruleForm.remark" maxlength="100" :style="inputWidth"></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -100,8 +94,8 @@
                 <el-option label="停用" :value="1"></el-option>
               </el-select>
               </el-form-item> -->
-              <el-form-item label="角色描述：" prop="description" >
-                <el-input placeholder="请输入..." type="textarea" v-model="ruleForm.description" maxlength="100" :style="inputWidth"></el-input>
+              <el-form-item label="角色描述：" prop="remark" >
+                <el-input placeholder="请输入..." type="textarea" v-model="ruleForm.remark" maxlength="100" :style="inputWidth"></el-input>
               </el-form-item>
           </el-form>
         </div>
@@ -303,11 +297,11 @@ export default {
       this.tableData = [];
       let that = this;
       // Object.assign(this.searchForm, this.pagination);
-      this.searchForm.pageNo=this.pagination.pageNo
-      this.searchForm.pageSize=this.pagination.pageSize
-      this.$axios.post("/sysRole/findListRole", this.searchForm).then(res => {
+      this.searchForm.pageNo=this.pagination.pageNo;
+      this.searchForm.pageSize=this.pagination.pageSize;
+      this.$axios.post("/sysRole/queryPage", this.searchForm).then(res => {
         if (res.data.code==200) {
-          that.tableData = res.data.data.rows;
+          that.tableData = res.data.data.dataList;
           that.pagination.total = res.data.data.total*1;
         }
       });
@@ -340,7 +334,7 @@ export default {
               let params=this.ruleForm
               let that = this;
                 that.loading=true
-                this.$axios.post("/sysRole/saveRole", params).then(function(res) {
+                this.$axios.post("/sysRole/save", params).then(function(res) {
                   that.loading=false
                   if(res.data.code==200) {
                     that.addDialog = false;
@@ -377,7 +371,7 @@ export default {
               let params=this.ruleForm
             let that = this;
             that.loading=true
-            this.$axios.post("/sysRole/updateRole", params).then(function(res) {
+            this.$axios.post("/sysRole/update", params).then(function(res) {
                 that.loading=false
                 if(res.data.code==200) {
                   that.$message({
@@ -407,7 +401,7 @@ export default {
         type: "warning"
       }).then(() => {
           this.$axios
-            .post("/sysRole/deleteRole", { id: row.id })
+            .post("/sysRole/delete", { id: row.id })
             .then(res => {
               if (res.data.code==200) {
                 this.$message({
@@ -476,7 +470,7 @@ export default {
     // 获取角色已经拥有的功能权限
     getGnPer(id) {
       this.perAlreadyData = [];
-      this.$axios.post("/sysRoleResources/findResourcesByrole" , {roleId:id}).then(res => {
+      this.$axios.post("/sysResources/findRoleResources" , {id:id}).then(res => {
         if (res.data.code==200) {
           this.perAlreadyData = res.data.data;
           this.setPermissionCheck1(this.perAlreadyData);
@@ -501,7 +495,7 @@ export default {
       var data=''
       if(this.searchForm.type==1){
         this.permissionParams.resourcesIds = arr
-        url="/sysRoleResources/saveRoleResources"
+        url="/sysResources/saveRoleResourceRel"
         data='功能权限'
       }else{
         let data =_.map(this.$refs.permissionTree.getCheckedNodes(),(e)=>{

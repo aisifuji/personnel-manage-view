@@ -56,7 +56,7 @@
           </el-table-column>
           <el-table-column prop="sort" label="排序值" min-width="100" align="center">
           </el-table-column>
-          <el-table-column prop="statusCode" label="状态" min-width="100" align="center" :formatter="statusCode">
+          <el-table-column prop="statusCd" label="状态" min-width="100" align="center" :formatter="statusCode">
           </el-table-column>
           <!-- <el-table-column prop="createTime" label="创建时间" align="center" min-width="200" ></el-table-column>
           <el-table-column prop="modifyTime" label="修改时间" align="center" min-width="200" ></el-table-column> -->
@@ -122,8 +122,8 @@
             <el-form-item label="排序值：" prop="sort" :label-width="formLabelWidth" >
               <el-input v-model.number.trim="ruleForm.sort" placeholder="请输入排序值" style="width: 400px;" maxlength="6"></el-input>
             </el-form-item>
-            <el-form-item label="状态：" prop="statusCode" :label-width="formLabelWidth" >
-              <el-select v-model="ruleForm.statusCode" placeholder="请选择状态" style="width: 400px;">
+            <el-form-item label="状态：" prop="statusCd" :label-width="formLabelWidth" >
+              <el-select v-model="ruleForm.statusCd" placeholder="请选择状态" style="width: 400px;">
                 <el-option label="启用" :value="0"></el-option>
                 <el-option label="停用" :value="1"></el-option>
               </el-select>
@@ -178,8 +178,8 @@
             <el-form-item label="排序值：" prop="sort" :label-width="formLabelWidth" >
               <el-input v-model.number.trim="ruleForm.sort" placeholder="请输入排序值" style="width: 400px;" maxlength="6"></el-input>
             </el-form-item>
-            <el-form-item label="状态：" prop="statusCode" :label-width="formLabelWidth" >
-              <el-select v-model="ruleForm.statusCode" placeholder="请选择状态" style="width: 400px;">
+            <el-form-item label="状态：" prop="statusCd" :label-width="formLabelWidth" >
+              <el-select v-model="ruleForm.statusCd" placeholder="请选择状态" style="width: 400px;">
                 <el-option label="启用" :value="0"></el-option>
                 <el-option label="停用" :value="1"></el-option>
               </el-select>
@@ -327,7 +327,7 @@
       },
       // node节点点击
       handleNodeClick(data) {
-        this.searchForm.rpid = data.id;
+        this.searchForm.id = data.id;
         this.refreshData();
       },
       // 打开上级的下拉树
@@ -371,11 +371,11 @@
         this.tableItem = [];
         let that = this;
         // Object.assign(this.searchForm, this.pagination);
-        this.searchForm.pageNo=this.pagination.pageNo
-        this.searchForm.pageSize=this.pagination.pageSize
-        this.$axios.post("/sysResources/findListResources", this.searchForm).then(function(res) {
+        this.searchForm.pageNo=this.pagination.pageNo;
+        this.searchForm.pageSize=this.pagination.pageSize;
+        this.$axios.post("/sysResources/queryPage", this.searchForm).then(function(res) {
           if(res.data.code==200) {
-            that.tableData = res.data.data.rows;
+            that.tableData = res.data.data.dataList;
             that.pagination.total = res.data.data.total*1;
           }
         })
@@ -383,7 +383,7 @@
       // 新增
       addInfo(){
         this.addDialog = true; //弹窗显示
-        this.getTree()
+        // this.getTree()
         this.ruleForm={}
       },
       // 新增保存
@@ -394,10 +394,10 @@
         }, 1500);
           this.$refs.ruleForm.validate(valid=>{
             if(valid){
-              let params=this.ruleForm
+              let params=this.ruleForm;
               let that = this;
-              that.loading=true
-              this.$axios.post("/sysResources/saveResources", params).then(function(res) {
+              that.loading=true;
+              this.$axios.post("/sysResources/save", params).then(function(res) {
                 that.loading=false
                 if(res.data.code==200) {
                   that.$message({
@@ -423,7 +423,7 @@
       // 编辑
       editInfo(row){
         this.editDialog = true;//弹窗显示
-        this.getTree()
+        this.getTree();
         this.ruleForm=Object.assign({}, row);
         if(row.parentId!=0){
           let node = this.$refs.tree.getNode(row.parentId);
@@ -440,7 +440,7 @@
              let params=this.ruleForm
             let that = this;
             that.loading=true
-            this.$axios.post("/sysResources/updateResources", params).then(function(res) {
+            this.$axios.post("/sysResources/update", params).then(function(res) {
               that.loading=false
               if(res.data.code==200) {
                 that.$message({
@@ -471,7 +471,7 @@
         type: "warning"
       }).then(() => {
           this.$axios
-            .post("sysResources/deleteResources", { id: row.id })
+            .post("sysResources/delete", { id: row.id })
             .then(res => {
               if (res.data.code==200) {
                 this.$message({

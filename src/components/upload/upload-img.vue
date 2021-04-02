@@ -122,14 +122,12 @@ export default {
                  })
                  return false;
         }
-        
-          _.each(fileList,(e)=>{
-            
-            if(!e.response){
-              this.imgList.push(e.url)
-            }
-          })
-          this.imgList.push(response.data)
+
+        fileList.forEach((item,index)=>{
+          if(item.response.code = 200){
+            this.imgList.push(item.response.data.relativeFilePath)
+          }
+        })
           this.$emit('success', this.imgList);
       }
     },

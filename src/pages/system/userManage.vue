@@ -1,22 +1,6 @@
 <template>
   <div class="height-100 UserManage">
     <el-row class="height-100 bg-color">
-      <el-col :span="4" class="height-100 pr5">
-        <div class="xz_tree">
-          <el-tree
-            style="margin-top:15px;margin-left:15px"
-            ref="tree"
-            :props="defaultProps"
-            node-key="id"
-            :highlight-current="true"
-            :expand-on-click-node="false"
-            :check-on-click-node="true"
-            :data="treeData"
-            @node-click="handleNodeClick"
-          >
-          </el-tree>
-        </div>
-      </el-col>
       <el-col :span="20" class="height-100 pl-5">
         <div class="xz_content height-100">
           <M-Table-List >
@@ -41,21 +25,22 @@
             <div slot="TableDom">
               <el-table :data="tableData" :stripe="true" ref="xzTable" border :height="sHeight"  class="xz_table">
                 <el-table-column type="index" label="序号" width="55" align="center"></el-table-column>
+                <el-table-column prop="id" label="工号" min-width="100" align="center"></el-table-column>
                 <el-table-column prop="loginName" label="用户账户" min-width="100" align="center"></el-table-column>
                 <el-table-column prop="userName" label="用户姓名" min-width="100" align="center"></el-table-column>
-                <el-table-column prop="mobile" label="手机号" min-width="110" align="center"></el-table-column>
+                <el-table-column prop="birthday" label="出生日期" min-width="100" align="center" ></el-table-column>
+                <el-table-column prop="job" label="职务" min-width="100" align="center"></el-table-column>
+                <el-table-column prop="tel" label="手机号" min-width="110" align="center"></el-table-column>
                 <el-table-column prop="email" label="邮箱" min-width="100" align="center"></el-table-column>
-                <el-table-column prop="roleName" label="角色" min-width="100" align="center"></el-table-column>
-                <el-table-column prop="orgName" label="组织" min-width="150" align="center"></el-table-column>
-                <el-table-column prop="createTime" label="创建时间" min-width="180" align="center" :formatter="dateFormat"></el-table-column>
-                <el-table-column prop="statusCode" label="状态" min-width="100" align="center" :formatter="stateType"></el-table-column>
+                <el-table-column prop="entryDate" label="入职时间" min-width="180" align="center"></el-table-column>
+                <el-table-column prop="statusCd" label="状态" min-width="100" align="center" :formatter="stateType"></el-table-column>
                 <el-table-column label="操作" fixed="right" align="center" width="400">
                   <template slot-scope="scope">
                     <span>
                       <el-link type="primary" style='margin-right:2px'  @click="editInfo(scope.row)" >编辑</el-link>
                       <el-link type="danger" style='margin-right:2px'   @click="handleDelete(scope.row)"  >删除</el-link>
-                      <el-link type="info" style='margin-right:2px' @click="rewritePass(scope.row)"  >修改密码</el-link>
-                      <el-link type="info" @click="resetPass(scope.row)">重置密码</el-link>
+<!--                      <el-link type="info" style='margin-right:2px' @click="rewritePass(scope.row)"  >修改密码</el-link>-->
+<!--                      <el-link type="info" @click="resetPass(scope.row)">重置密码</el-link>-->
                     </span>
                   </template>
                 </el-table-column>
@@ -86,21 +71,76 @@
               <el-form-item label="用户姓名：" prop="userName" >
                 <el-input v-model.trim="ruleForm.userName" placeholder="请输入用户姓名"  maxlength="32" :style="inputWidth"></el-input>
               </el-form-item>
-              <el-form-item label="手机号：" prop="mobile" >
-                <el-input v-model.number.trim="ruleForm.mobile" placeholder="请输入手机号"  maxlength="13" :style="inputWidth"></el-input>
+            <el-form-item label="英文名称：" prop="engName" >
+              <el-input v-model.trim="ruleForm.engName" placeholder="请输入用户英文名称"  maxlength="32" :style="inputWidth"></el-input>
+            </el-form-item>
+              <el-form-item label="手机号：" prop="tel" >
+                <el-input v-model.number.trim="ruleForm.tel" placeholder="请输入手机号"  maxlength="13" :style="inputWidth"></el-input>
               </el-form-item>
               <el-form-item label="邮箱：" prop="email" >
                 <el-input v-model.trim="ruleForm.email" placeholder="请输入邮箱"   maxlength="50" :style="inputWidth"></el-input>
               </el-form-item>
-              <el-form-item label="账户状态：" prop="statusCode" >
-                <el-select v-model="ruleForm.statusCode" style="width: 100%" :style="inputWidth">
+              <el-form-item label="籍贯：" prop="nativePlace" >
+              <el-input v-model.trim="ruleForm.nativePlace" placeholder="籍贯"   maxlength="50" :style="inputWidth"></el-input>
+              </el-form-item>
+            <el-form-item label="民族：" prop="nation" >
+              <el-input v-model.trim="ruleForm.nation" placeholder="民族"   maxlength="50" :style="inputWidth"></el-input>
+            </el-form-item>
+            <el-form-item label="出生日期：" prop="birthday" >
+              <el-date-picker
+                v-model="ruleForm.birthday"
+                type="date"
+                placeholder="选择日期">
+              </el-date-picker>
+            </el-form-item>
+            <el-form-item label="地址：" prop="address" >
+              <el-input v-model.trim="ruleForm.address" placeholder="地址"   maxlength="50" :style="inputWidth"></el-input>
+            </el-form-item>
+            <el-form-item label="头像" prop="photo" >
+              <upload
+                @success="uploadImg"
+                :clearFiles.sync="uploadClearFiles"
+                :list="imgList"
+                :url="url"
+                :limit="1"
+              ></upload>
+            </el-form-item>
+            <el-form-item label="性别：" prop="sex" >
+              <el-radio-group v-model="ruleForm.sex">
+                <el-radio :label="0">女</el-radio>
+                <el-radio :label="1">男</el-radio>
+              </el-radio-group>
+            </el-form-item>
+            <el-form-item label="职务：" prop="job" >
+              <el-input v-model.trim="ruleForm.job" placeholder="职务"   maxlength="50" :style="inputWidth"></el-input>
+            </el-form-item>
+            <el-form-item label="职位：" prop="position" >
+              <el-input v-model.trim="ruleForm.position" placeholder="职位"   maxlength="50" :style="inputWidth"></el-input>
+            </el-form-item>
+            <el-form-item label="昵称：" prop="nickname" >
+              <el-input v-model.trim="ruleForm.nickname" placeholder="请输入用户昵称"  maxlength="32" :style="inputWidth"></el-input>
+            </el-form-item>
+            <el-form-item label="入职时间：" prop="entryDate" >
+              <el-date-picker
+                v-model="ruleForm.entryDate"
+                type="date"
+                placeholder="选择日期">
+              </el-date-picker>
+            </el-form-item>
+            <el-form-item label="个人简介：" prop="personalProfile" >
+              <el-input v-model.trim="ruleForm.personalProfile" placeholder="个人简介"   maxlength="50" :style="inputWidth"></el-input>
+            </el-form-item>
+              <el-form-item label="账户状态：" prop="statusCd" >
+                <el-select v-model="ruleForm.statusCd" style="width: 100%" :style="inputWidth">
                   <el-option label="启用" :value="0"></el-option>
                   <el-option label="停用" :value="1"></el-option>
                 </el-select>
               </el-form-item>
              <!--部门多选-->
-              <el-form-item label="组织归属：" prop="orgIds" >
-                <el-input placeholder="请选择组织" v-model="orgNames" @click.native="openSelectOrgBox" :style="inputWidth"></el-input>
+              <el-form-item label="部门归属：" prop="orgIds" >
+                <el-select v-model="ruleForm.deptIds" multiple placeholder="请选择部门（可多选）" :style="inputWidth">
+                  <el-option v-for="dept in deptList" :key="dept.id" :label="dept.deptName" :value="dept.id"></el-option>
+                </el-select>
               </el-form-item>
               <!--角色多选-->
               <el-form-item label="添加角色：" prop="roleIds" >
@@ -123,42 +163,89 @@
       <el-dialog :title="'用户管理-编辑'" :visible.sync="editDialog" :close-on-click-modal="false" custom-class="dialog-type-column3" @close="closed">
         <div class="dialog-form" :v-loading="loading">
           <el-form :model="ruleForm" ref="ruleForm" :rules="rules" label-position="right"  label-width="75px" >
-               <el-form-item label="用户账号：" prop="loginName" >
-                <el-input v-model.trim="ruleForm.loginName" placeholder="请输入用户账号"  readonly  maxlength="40" :style="inputWidth"></el-input>
-              </el-form-item>
-              <!-- <el-form-item label="密码：" prop="password" >
-                <el-input type="password" v-model.trim="ruleForm.password" placeholder="请输入密码"
-                ></el-input>
-              </el-form-item> -->
-              <!-- <el-form-item label="确认密码：" prop="checkPass" >
-                <el-input type="password" v-model.trim="ruleForm.checkPass" placeholder="请再次输入"
-                ></el-input>
-              </el-form-item> -->
-              <el-form-item label="用户姓名：" prop="userName" >
-                <el-input v-model.trim="ruleForm.userName" placeholder="请输入用户姓名"  maxlength="32" :style="inputWidth"></el-input>
-              </el-form-item>
-              <el-form-item label="手机号：" prop="mobile" >
-                <el-input v-model.number.trim="ruleForm.mobile" placeholder="请输入手机号"  maxlength="13" :style="inputWidth"></el-input>
-              </el-form-item>
-              <el-form-item label="邮箱：" prop="email" >
-                <el-input v-model.trim="ruleForm.email" placeholder="请输入邮箱"   maxlength="50" :style="inputWidth"></el-input>
-              </el-form-item>
-              <el-form-item label="账户状态：" prop="statusCode" >
-                <el-select v-model="ruleForm.statusCode" style="width: 100%" :style="inputWidth">
-                  <el-option label="启用" :value="0"></el-option>
-                  <el-option label="停用" :value="1"></el-option>
-                </el-select>
-              </el-form-item>
-             <!--部门多选-->
-              <el-form-item label="组织归属：" prop="orgIds" >
-                <el-input placeholder="请选择组织" v-model="orgNames" @click.native="openSelectOrgBox" :style="inputWidth"></el-input>
-              </el-form-item>
-              <!--角色多选-->
-              <el-form-item label="添加角色：" prop="roleIds" >
-                <el-select v-model="ruleForm.roleIds" multiple placeholder="请选择角色（可多选）" :style="inputWidth">
-                  <el-option v-for="role in roleList" :key="role.id"  :label="role.roleName" :value="role.id"></el-option>
-                </el-select>
-              </el-form-item>
+            <el-form-item label="用户账号：" prop="loginName" >
+              <el-input v-model.trim="ruleForm.loginName" placeholder="请输入用户账号"  maxlength="40" :style="inputWidth"></el-input>
+            </el-form-item>
+            <el-form-item label="用户姓名：" prop="userName" >
+              <el-input v-model.trim="ruleForm.userName" placeholder="请输入用户姓名"  maxlength="32" :style="inputWidth"></el-input>
+            </el-form-item>
+            <el-form-item label="英文名称：" prop="engName" >
+              <el-input v-model.trim="ruleForm.engName" placeholder="请输入用户英文名称"  maxlength="32" :style="inputWidth"></el-input>
+            </el-form-item>
+            <el-form-item label="手机号：" prop="tel" >
+              <el-input v-model.number.trim="ruleForm.tel" placeholder="请输入手机号"  maxlength="13" :style="inputWidth"></el-input>
+            </el-form-item>
+            <el-form-item label="邮箱：" prop="email" >
+              <el-input v-model.trim="ruleForm.email" placeholder="请输入邮箱"   maxlength="50" :style="inputWidth"></el-input>
+            </el-form-item>
+            <el-form-item label="籍贯：" prop="nativePlace" >
+              <el-input v-model.trim="ruleForm.nativePlace" placeholder="籍贯"   maxlength="50" :style="inputWidth"></el-input>
+            </el-form-item>
+            <el-form-item label="民族：" prop="nation" >
+              <el-input v-model.trim="ruleForm.nation" placeholder="民族"   maxlength="50" :style="inputWidth"></el-input>
+            </el-form-item>
+            <el-form-item label="出生日期：" prop="birthday" >
+              <el-date-picker
+                v-model="ruleForm.birthday"
+                type="date"
+                placeholder="选择日期">
+              </el-date-picker>
+            </el-form-item>
+            <el-form-item label="地址：" prop="address" >
+              <el-input v-model.trim="ruleForm.address" placeholder="地址"   maxlength="50" :style="inputWidth"></el-input>
+            </el-form-item>
+            <el-form-item label="头像" prop="photo" >
+              <upload
+                @success="uploadImg"
+                :clearFiles.sync="uploadClearFiles"
+                :list="imgList"
+                :url="url"
+                :limit="1"
+              ></upload>
+            </el-form-item>
+            <el-form-item label="性别：" prop="sex" >
+              <el-radio-group v-model="ruleForm.sex">
+                <el-radio :label="0">女</el-radio>
+                <el-radio :label="1">男</el-radio>
+              </el-radio-group>
+            </el-form-item>
+            <el-form-item label="职务：" prop="job" >
+              <el-input v-model.trim="ruleForm.job" placeholder="职务"   maxlength="50" :style="inputWidth"></el-input>
+            </el-form-item>
+            <el-form-item label="职位：" prop="position" >
+              <el-input v-model.trim="ruleForm.position" placeholder="职位"   maxlength="50" :style="inputWidth"></el-input>
+            </el-form-item>
+            <el-form-item label="昵称：" prop="nickname" >
+              <el-input v-model.trim="ruleForm.nickname" placeholder="请输入用户昵称"  maxlength="32" :style="inputWidth"></el-input>
+            </el-form-item>
+            <el-form-item label="入职时间：" prop="entryDate" >
+              <el-date-picker
+                v-model="ruleForm.entryDate"
+                type="date"
+                placeholder="选择日期">
+              </el-date-picker>
+            </el-form-item>
+            <el-form-item label="个人简介：" prop="personalProfile" >
+              <el-input v-model.trim="ruleForm.personalProfile" placeholder="个人简介"   maxlength="50" :style="inputWidth"></el-input>
+            </el-form-item>
+            <el-form-item label="账户状态：" prop="statusCd" >
+              <el-select v-model="ruleForm.statusCd" style="width: 100%" :style="inputWidth">
+                <el-option label="启用" :value="0"></el-option>
+                <el-option label="停用" :value="1"></el-option>
+              </el-select>
+            </el-form-item>
+            <!--部门多选-->
+            <el-form-item label="部门归属：" prop="orgIds" >
+              <el-select v-model="ruleForm.deptIds" multiple placeholder="请选择部门（可多选）" :style="inputWidth">
+                <el-option v-for="dept in deptList" :key="dept.id" :label="dept.deptName" :value="dept.id"></el-option>
+              </el-select>
+            </el-form-item>
+            <!--角色多选-->
+            <el-form-item label="添加角色：" prop="roleIds" >
+              <el-select v-model="ruleForm.roleIds" multiple placeholder="请选择角色（可多选）" :style="inputWidth">
+                <el-option v-for="role in roleList" :key="role.id" :label="role.roleName" :value="role.id"></el-option>
+              </el-select>
+            </el-form-item>
           </el-form>
         </div>
         <div slot="footer" class="dialog-footer">
@@ -233,11 +320,12 @@
   import Vue from 'vue'
   import paginationCommon from '~/components/Pagination.vue'
   import tableCommonData from "~/components/mixin/table.js";
+  import upload from '../../components/upload/upload-img.vue'
   import API from '../../api/webpackAPI'
   // 引入时间戳插件
   import moment from 'moment'
   export default {
-    components: {paginationCommon},
+    components: {paginationCommon,upload},
     mixins: [tableCommonData],
     name: "UserManage",
     data() {
@@ -269,11 +357,13 @@
         }
       };
       return {
+        url:`${API.img_url}common/uploadFile`,
         inputWidth:'width:500px',
         loading:false,
         isDisable:false,
         currentNodeId: '', // 记录当前点击的资源节点
         formLabelWidth: '120px',
+        uploadClearFiles:false,
         formInputWidth: this.$store.state.fromBox.formInputWidth,
         sHeight: this.$store.state.bodyBox.tableHeight,
         cTotal: 0, // 当前分页总条数
@@ -301,11 +391,14 @@
           password: "",
           checkPass:"",
           loginName: "",
-          mobile:"",
           email:"",
           statusCode: "",
-          orgIds: '',
+          deptIds: '',
           roleIds: '',
+          sex:'',
+          nickname:'',
+          photo:''
+
         },
         // 表单属性-修改密码
         changePassForm: {
@@ -317,43 +410,43 @@
         },
         // 表单验证规则
         rules: {
-          loginName: [
-            {required: true, message: '请输入用户账号', trigger: ['blur','change']},
-            // { validator: validateSurnmae, trigger: "blur" },
-          ],
-          password: [
-            {required: true, message: '请输入密码', trigger: ['blur','change']},
-            { validator: validatePass, trigger: 'blur' }
-          ],
-          checkPass: [
-            // {required: true, message: '请再次输入密码', trigger: ['blur','change']},
-            { validator: validatePass2, trigger: ['blur','change'] }
-          ],
-          userName: [
-            {required: true, message: '请输入姓名', trigger: ['blur','change']},
-          ],
-          // mobile: [
-          //   {required: true, message: '请输入手机号', trigger: ['blur','change']},
+          // loginName: [
+          //   {required: true, message: '请输入用户账号', trigger: ['blur','change']},
+          //   // { validator: validateSurnmae, trigger: "blur" },
           // ],
-          // email: [
-          //   {required: true, message: '请输入邮箱', trigger: ['blur','change']},
+          // password: [
+          //   {required: true, message: '请输入密码', trigger: ['blur','change']},
+          //   { validator: validatePass, trigger: 'blur' }
           // ],
-          orgIds: [
-            {required: true, message: '请点开弹窗选择组织', trigger: 'change'},
-          ],
-          roleIds: [
-            {type:'array',required: true, message: '请选择角色', trigger: 'change'},
-          ],
-          statusCode: [
-            {required: true, message: '请选择账户状态', trigger: 'change'},
-          ],
-
-          oldPassword: [
-            {required: true, message: '请输入原密码', trigger: ['blur','change']},
-          ],
-          newPasswordS: [
-            {required: true, message: '请确认密码', trigger: ['blur','change']},
-          ],
+          // checkPass: [
+          //   // {required: true, message: '请再次输入密码', trigger: ['blur','change']},
+          //   { validator: validatePass2, trigger: ['blur','change'] }
+          // ],
+          // userName: [
+          //   {required: true, message: '请输入姓名', trigger: ['blur','change']},
+          // ],
+          // // mobile: [
+          // //   {required: true, message: '请输入手机号', trigger: ['blur','change']},
+          // // ],
+          // // email: [
+          // //   {required: true, message: '请输入邮箱', trigger: ['blur','change']},
+          // // ],
+          // orgIds: [
+          //   {required: true, message: '请点开弹窗选择组织', trigger: 'change'},
+          // ],
+          // roleIds: [
+          //   {type:'array',required: true, message: '请选择角色', trigger: 'change'},
+          // ],
+          // statusCode: [
+          //   {required: true, message: '请选择账户状态', trigger: 'change'},
+          // ],
+          //
+          // oldPassword: [
+          //   {required: true, message: '请输入原密码', trigger: ['blur','change']},
+          // ],
+          // newPasswordS: [
+          //   {required: true, message: '请确认密码', trigger: ['blur','change']},
+          // ],
         },
          // 控制新增弹窗
         addDialog: false,
@@ -363,11 +456,12 @@
         tableData: [],
         // 角色数组,
         roleList: [],
+        deptList:[],
         // 组织id
         orgId: '',
         btns: [],
         treeData:[],
-
+        imgList:[],
         /*用户关联组织*/
         orgNames: '',
         orgVisiable: false,
@@ -385,10 +479,9 @@
        }
   },
     created () {
-      console.log(66)
       this.refreshData2();
       // this.getBtns();
-      this.getTree()
+      // this.getTree()
     },
     methods: {
       dateFormat:function(row,column){   
@@ -437,12 +530,11 @@
       refreshData2: function () {
         let that = this;
         that.tableData = [];
-        // Object.assign(this.searchForm, this.pagination);
-        this.searchForm.pageNo=this.pagination.pageNo
-        this.searchForm.pageSize=this.pagination.pageSize
-        this.$axios.post("/sysUser/findListUser", this.searchForm).then(function (res) {
-          if (res.data.code==200) {
-            that.tableData = res.data.data.rows;
+        this.searchForm.pageNo = this.pagination.pageNo;
+        this.searchForm.pageSize = this.pagination.pageSize;
+        this.$axios.post("/sysUser/queryPage", this.searchForm).then(function (res) {
+          if (res.data.code == 200) {
+            that.tableData = res.data.data.dataList;
             that.pagination.total = res.data.data.total*1;
           }
         })
@@ -462,7 +554,8 @@
       // 新增
       addInfo(){
         this.addDialog = true; //弹窗显示
-        this.loadRoleData()
+        this.loadRoleData();
+        this.loadDeptData();
         this.ruleForm={}
         this.orgNames=''
       },
@@ -477,7 +570,7 @@
               let params=this.ruleForm
               let that = this;
                 that.loading=true
-                this.$axios.post("/sysUser/saveUser", params).then(function(res) {
+                this.$axios.post("/sysUser/save", params).then(function(res) {
                   that.loading=false
                   if(res.data.code==200) {
                     that.addDialog = false;
@@ -508,7 +601,8 @@
       // 编辑
       editInfo(row){
         this.editDialog = true;//弹窗显示
-        this.loadRoleData()
+        this.loadRoleData();
+        this.loadDeptData();
         this.ruleForm=Object.assign({}, row);
         this.orgNames='请先点开弹框确定选择的组织'
         // this.$axios.post("/sysOrganizationUser/findUserOrganizationByUserId", {userId:row.id}).then(function(res) {
@@ -520,15 +614,20 @@
         //   // that.orgNames=orgIds.toString()
         //   console.log(that.orgNames);
         // })
-        // 角色回显
-        this.$axios.post("sysUserRole/findUserRoleByUserId", {userId:row.id}).then(res=> {
+        //角色回显
+        this.$axios.post("sysUser/detail", {id:row.id}).then(res=> {
           if(res.data.code==200){
-            var data=res.data.data
-            var roleIds=[]
-            for(var i=0;i<data.length;i++){
-              roleIds.push(data[i].roleId)
+            var data = res.data.data;
+            var roleIds = [];
+            var deptIds = [];
+            for(var i=0;i<data.deptList.length;i++){
+              deptIds.push(data.deptList[i].id)
             }
-            this.ruleForm.roleIds=roleIds
+            for(var i=0;i<data.roleList.length;i++){
+              roleIds.push(data.roleList[i].id)
+            }
+            this.ruleForm.roleIds = roleIds;
+            this.ruleForm.deptIds = deptIds;
           }
         })
       },
@@ -542,7 +641,7 @@
               let params=this.ruleForm
             let that = this;
             that.loading=true
-            this.$axios.post("/sysUser/updateUser", params).then(function(res) {
+            this.$axios.post("/sysUser/update", params).then(function(res) {
                 that.loading=false
                 if(res.data.code==200) {
                   that.$message({
@@ -572,7 +671,7 @@
         type: "warning"
       }).then(() => {
           this.$axios
-            .post("/sysUser/deleteUser", { id: row.id })
+            .post("/sysUser/delete", { id: row.id })
             .then(res => {
               if (res.data.code==200) {
                 this.$message({
@@ -605,15 +704,20 @@
       // 加载全部角色列表
       loadRoleData: function () {
         let that = this;
-        let params={
-          // roleName:''
-        }
-        // Object.assign(params,this.pagination);
-        // params.pageNo=this.pagination.pageNo
-        // params.pageSize=-this.pagination.pageSize
-        this.$axios.get("/sysRole/getUserRoles", params).then(function (res) {
+        let params = {};
+        this.$axios.post("/sysRole/queryList", params).then(function (res) {
           if(res.data.code==200){
             that.roleList = res.data.data;
+          }
+        })
+      },
+      // 加载全部部门列表
+      loadDeptData: function () {
+        let that = this;
+        let params = {};
+        this.$axios.post("/sysDept/queryList", params).then(function (res) {
+          if(res.data.code == 200){
+            that.deptList = res.data.data;
           }
         })
       },
@@ -1001,8 +1105,11 @@
         // }
       },
       stateType:function(row){
-        return row.statusCode == '0' ? '启用' : row.statusCode == '1' ? '停用' : ''
-      }
+        return row.statusCd == '0' ? '启用' : row.statusCd == '1' ? '停用' : ''
+      },
+      uploadImg(data){
+        this.ruleForm.photo=data.toString()
+      },
     }
   }
 
