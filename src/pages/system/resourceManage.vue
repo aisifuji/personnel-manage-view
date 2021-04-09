@@ -376,7 +376,7 @@
         this.$axios.post("/sysResources/queryPage", this.searchForm).then(function(res) {
           if(res.data.code==200) {
             that.tableData = res.data.data.dataList;
-            that.pagination.total = res.data.data.total*1;
+            that.pagination.total = res.data.data.totalCount*1;
           }
         })
       },

@@ -1,29 +1,14 @@
 <template>
   <div class="height-100 departmentManage">
     <el-row class="height-100 bg-color">
-<!--      <el-col :span="4" class="height-100 pr5">-->
-<!--        <div class="xz_tree">-->
-<!--          <el-tree-->
-<!--            ref="tree"-->
-<!--            :props="defaultProps"-->
-<!--            node-key="id"-->
-<!--            :highlight-current="true"-->
-<!--            :expand-on-click-node="false"-->
-<!--            :check-on-click-node="true"-->
-<!--            :data="treeData"-->
-<!--            @node-click="handleNodeClick"-->
-<!--          >-->
-<!--          </el-tree>-->
-<!--        </div>-->
-<!--      </el-col>-->
       <el-col :span="20" class="height-100 pl-5">
         <div class="xz_content">
           <M-Table-List >
             <div slot="Info">
               <el-form :inline="true" :model="searchForm" label-width="40px" size="mini">
-                <el-form-item label="部门名称 ：">
-                  <el-input v-model.trim="searchForm.deptName" :style="{width:formInputWidth}"
-                            placeholder="部门名称" clearable></el-input>
+                <el-form-item label="用户名称 ：">
+                  <el-input v-model.trim="searchForm.employeeNm" :style="{width:formInputWidth}"
+                            placeholder="用户名称" clearable></el-input>
                 </el-form-item>
                 <el-form-item>
                   <el-form-item>
@@ -33,7 +18,8 @@
                 </el-form-item>
               <el-form-item class="float-right">
                 <span>
-                  <el-button type="primary" @click="addInfo"  >新增</el-button>
+                  <el-button type="primary" @click="addInfo"  >上班打卡</el-button>
+                  <el-button type="primary" @click="addInfo"  >下班打卡</el-button>
                 </span>
               </el-form-item>
               </el-form>
@@ -41,18 +27,11 @@
             <div slot="TableDom">
               <el-table :data="tableData" :stripe="true" :highlight-current-row="true" style="width: 100%;" border class="xz_table" ref="xzTable">
                 <el-table-column type="index" label="序号" width="55" align="center"></el-table-column>
-                <el-table-column prop="deptName" label="部门名称" min-width="120" align="center"></el-table-column>
-                <el-table-column prop="deptCode" label="部门编码" min-width="100" align="center"></el-table-column>
-                <el-table-column prop="createTime" label="成立时间" align="center" ></el-table-column>
-                <el-table-column prop="statusCd" label="状态" align="center" :formatter="stateCode"></el-table-column>
-                 <el-table-column label="操作" align="center" width="200">
-                  <template slot-scope="scope">
-                    <span>
-                      <el-link type="primary" style='margin-right:5px'  @click="editInfo(scope.row)" >编辑</el-link>
-                      <el-link type="danger" @click="handleDelete(scope.row)"  >删除</el-link>
-                    </span>
-                  </template>
-                </el-table-column>
+                <el-table-column prop="employeeNm" label="员工姓名" min-width="120" align="center"></el-table-column>
+                <el-table-column prop="workDate" label="日期" min-width="100" align="center"></el-table-column>
+                <el-table-column prop="weekday" label="星期" align="center" ></el-table-column>
+                <el-table-column prop="startWork" label="上班打卡时间" align="center" ></el-table-column>
+                <el-table-column prop="endWork" label="下班打卡时间" align="center" ></el-table-column>
               </el-table>
             </div>
             <div slot="Pagination">
@@ -64,39 +43,35 @@
     </el-row>
     <!--新增弹窗-->
     <div>
-      <el-dialog :title="'组织管理-新增'" :visible.sync="addDialog" :close-on-click-modal="false" custom-class="dialog-type-column1" @close="closed">
+      <el-dialog :title="'新增请假单'" :visible.sync="addDialog" :close-on-click-modal="false" custom-class="dialog-type-column1" @close="closed">
         <div class="dialog-form" :v-loading="loading">
           <el-form :model="ruleForm" ref="ruleForm" :rules="rules" label-position="right" label-width="80px">
-<!--            <el-form-item label="上级部门：" prop="parentId">-->
-<!--              <el-input placeholder="请选择上级组织" v-model="ruleForm.pidLabel" :style="inputWidth" @click.native="openPidBox" style="width: 100%;"></el-input>-->
-<!--              <div class="pidList" v-show="pidBoxShow">-->
-<!--                <el-tree-->
-<!--                  ref="tree2"-->
-<!--                  :props="defaultProps"-->
-<!--                  node-key="id"-->
-<!--                  :highlight-current="true"-->
-<!--                  :expand-on-click-node="false"-->
-<!--                  :check-on-click-node="true"-->
-<!--                  :data="treeData"-->
-<!--                  @node-click="handleNodeClick2">-->
-<!--                </el-tree>-->
-<!--              </div>-->
-<!--            </el-form-item>-->
-            <el-form-item label="组织名称：" prop="deptName">
-              <el-input v-model.trim="ruleForm.deptName" :style="inputWidth" placeholder="请输入组织名称" style="width: 100%;" maxlength="32"></el-input>
+            <el-form-item label="请假开始时间：" prop="leaveStartTime">
+              <el-date-picker
+                v-model="ruleForm.leaveStartTime"
+                type="datetime"
+                placeholder="选择日期">
+              </el-date-picker>
             </el-form-item>
-            <el-form-item label="组织编码：" prop="deptCode">
-              <el-input v-model.trim="ruleForm.deptCode" :style="inputWidth" placeholder="请输入组织编码" style="width: 100%;" maxlength="32"></el-input>
+            <el-form-item label="请假结束时间：" prop="leaveEndTime">
+              <el-date-picker
+                v-model="ruleForm.leaveEndTime"
+                type="datetime"
+                placeholder="选择日期">
+              </el-date-picker>
             </el-form-item>
-<!--            <el-form-item label="排序值：" prop="sort">-->
-<!--              <el-input v-model.number.trim="ruleForm.sort" :style="inputWidth" placeholder="请输入数字排序值：" style="width: 100%;" maxlength="9"></el-input>-->
-<!--            </el-form-item>-->
-            <el-form-item label="状态：" prop="statusCd" >
-              <el-select v-model="ruleForm.statusCd" :style="inputWidth" placeholder="请选择状态" style="width: 100%;">
-                <el-option label="启用" :value="0"></el-option>
-                <el-option label="停用" :value="1"></el-option>
+            <el-form-item label="请假理由：" prop="leaveReason">
+              <el-input v-model.trim="ruleForm.leaveReason" :style="inputWidth" placeholder="请输入请假理由" style="width: 100%;" maxlength="32"></el-input>
+            </el-form-item>
+            <el-form-item label="请假类型：" prop="leaveTp">
+              <el-select v-model="ruleForm.leaveTp" style="width: 100%" :style="inputWidth">
+                <el-option label="病假" :value="1"></el-option>
+                <el-option label="年假" :value="2"></el-option>
+                <el-option label="调休" :value="3"></el-option>
+                <el-option label="婚假" :value="4"></el-option>
+                <el-option label="事假" :value="5"></el-option>
               </el-select>
-              </el-form-item>
+            </el-form-item>
           </el-form>
         </div>
         <div slot="footer" class="dialog-footer">
@@ -163,7 +138,7 @@
   export default {
     components: {paginationCommon},
     mixins: [tableCommonData],
-    name: "DepartmentManage",
+    name: "employeeWorkAttendanceManage",
     data() {
       return {
         inputWidth:'width:500px',
@@ -172,6 +147,7 @@
         formInputWidth: this.$store.state.fromBox.formInputWidth,
         sHeight: this.$store.state.bodyBox.tableHeight,
         pidBoxShow: false,
+        userId:sessionStorage.getItem('userId'),
         selectTreeName: '',
         // 查询表单
         searchForm: {
@@ -314,9 +290,9 @@
         let that = this;
         that.tableData = [];
         // Object.assign(this.searchForm, this.pagination);
-        this.searchForm.pageNo=this.pagination.pageNo
-        this.searchForm.pageSize=this.pagination.pageSize
-        this.$axios.post('/sysDept/queryPage', this.searchForm).then(function (res) {
+        this.searchForm.pageNo=this.pagination.pageNo;
+        this.searchForm.pageSize=this.pagination.pageSize;
+        this.$axios.post('/employeeWorkAttendance/queryPage', this.searchForm).then(function (res) {
           if(res.data.code==200){
             that.tableData = res.data.data.dataList;
             that.pagination.total = res.data.data.totalCount*1;
@@ -340,7 +316,7 @@
               let params=this.ruleForm
               let that = this;
                 that.loading=true
-                this.$axios.post("/sysDept/save", params).then(function(res) {
+                this.$axios.post("/employeeLeaveApply/save", params).then(function(res) {
                   that.loading=false
                   if(res.data.code==200) {
                     that.addDialog = false;
@@ -363,15 +339,33 @@
             }
           })
       },
-      // 编辑
-      editInfo(row){
-        this.editDialog = true;//弹窗显示
-        // this.getTree();
-        this.ruleForm=Object.assign({}, row);
-        if(row.parentId!=0){
-          let node = this.$refs.tree.getNode(row.parentId);
-          this.ruleForm.pidLabel=node.data.name
-        }
+      // 审批
+      editInfo(row,statusCd){
+        this.$confirm("是否继续?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }).then(() => {
+          this.$axios
+            .post("/employeeLeaveApply/update", { id: row.id,statusCd: statusCd})
+            .then(res => {
+              if (res.data.code==200) {
+                this.$message({
+                  message: '审批通过',
+                  type: 'success',
+                  duration: 1500,
+                  customClass: 'xz-alert-common'
+                });
+                this.refreshData();
+              }
+            });
+        }).catch(() => {
+          this.$message({
+            showClose: true,
+            type: "info",
+            message: "取消审批"
+          });
+        });
       },
       editClick(){
          this.isDisable = true;
@@ -440,9 +434,11 @@
         this.pagination.pageSize = msg.pageSize
         this.refreshData();
       },
-
+      leaveTp(row){
+        return row.leaveTp == '1'?'病假':row.leaveTp=='2'?'年假':row.leaveTp=='3'?'调休':row.leaveTp=='4'?'婚假':row.leaveTp=='5'?'事假':''
+      },
       stateCode(row){
-        return row.statusCd=='0'?'启用':row.statusCd=='1'?'停用':''
+        return row.statusCd == '1'?'待审批':row.statusCd=='2'?'审批通过':'审批不通过'
       },
       fommatetime: function (row) {
       var value=row.createTime

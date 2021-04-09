@@ -1,6 +1,8 @@
 
 
-const base_dev = 'http://localhost:8009/'
+const base_dev = 'http://localhost:8009/';
+
+const img_url = 'http://localhost:8009/common/downloadFile';
 
 const test_prod = 'http://192.168.100.126:9120/sport-manager/'//测试环境
 
@@ -9,7 +11,7 @@ const test_prod = 'http://192.168.100.126:9120/sport-manager/'//测试环境
 const dev = {
   ROOT: base_dev,
   // img_url: base_dev.substring(0,base_dev.length-4)
-  img_url: base_dev
+  img_url: img_url
 }
 
 // 生产测试配置

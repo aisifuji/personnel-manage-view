@@ -1,29 +1,14 @@
 <template>
   <div class="height-100 departmentManage">
     <el-row class="height-100 bg-color">
-<!--      <el-col :span="4" class="height-100 pr5">-->
-<!--        <div class="xz_tree">-->
-<!--          <el-tree-->
-<!--            ref="tree"-->
-<!--            :props="defaultProps"-->
-<!--            node-key="id"-->
-<!--            :highlight-current="true"-->
-<!--            :expand-on-click-node="false"-->
-<!--            :check-on-click-node="true"-->
-<!--            :data="treeData"-->
-<!--            @node-click="handleNodeClick"-->
-<!--          >-->
-<!--          </el-tree>-->
-<!--        </div>-->
-<!--      </el-col>-->
       <el-col :span="20" class="height-100 pl-5">
         <div class="xz_content">
           <M-Table-List >
             <div slot="Info">
               <el-form :inline="true" :model="searchForm" label-width="40px" size="mini">
-                <el-form-item label="部门名称 ：">
-                  <el-input v-model.trim="searchForm.deptName" :style="{width:formInputWidth}"
-                            placeholder="部门名称" clearable></el-input>
+                <el-form-item label="事项名称：">
+                  <el-input v-model.trim="searchForm.itemName" :style="{width:formInputWidth}"
+                            placeholder="事项名称" clearable></el-input>
                 </el-form-item>
                 <el-form-item>
                   <el-form-item>
@@ -33,7 +18,7 @@
                 </el-form-item>
               <el-form-item class="float-right">
                 <span>
-                  <el-button type="primary" @click="addInfo"  >新增</el-button>
+                  <el-button type="primary" v-if="userId == 1" @click="addInfo"  >新增代办</el-button>
                 </span>
               </el-form-item>
               </el-form>
@@ -41,15 +26,15 @@
             <div slot="TableDom">
               <el-table :data="tableData" :stripe="true" :highlight-current-row="true" style="width: 100%;" border class="xz_table" ref="xzTable">
                 <el-table-column type="index" label="序号" width="55" align="center"></el-table-column>
-                <el-table-column prop="deptName" label="部门名称" min-width="120" align="center"></el-table-column>
-                <el-table-column prop="deptCode" label="部门编码" min-width="100" align="center"></el-table-column>
-                <el-table-column prop="createTime" label="成立时间" align="center" ></el-table-column>
-                <el-table-column prop="statusCd" label="状态" align="center" :formatter="stateCode"></el-table-column>
+                <el-table-column prop="itemName" label="项目名称" min-width="120" align="center"></el-table-column>
+                <el-table-column prop="planTime" label="计划时间" min-width="100" align="center"></el-table-column>
+                <el-table-column prop="itemContent" label="项目内容" min-width="100" align="center"></el-table-column>
+                <el-table-column prop="isFinish" label="是否完成" min-width="100" align="center" :formatter="stateType"></el-table-column>
                  <el-table-column label="操作" align="center" width="200">
                   <template slot-scope="scope">
                     <span>
-                      <el-link type="primary" style='margin-right:5px'  @click="editInfo(scope.row)" >编辑</el-link>
-                      <el-link type="danger" @click="handleDelete(scope.row)"  >删除</el-link>
+                      <el-link type="danger" v-if="userId == 1" @click="editInfo(scope.row)"  >编辑</el-link>
+                      <el-link type="danger" v-if="userId == 1" @click="handleDelete(scope.row)"  >删除</el-link>
                     </span>
                   </template>
                 </el-table-column>
@@ -64,39 +49,33 @@
     </el-row>
     <!--新增弹窗-->
     <div>
-      <el-dialog :title="'组织管理-新增'" :visible.sync="addDialog" :close-on-click-modal="false" custom-class="dialog-type-column1" @close="closed">
+      <el-dialog :title="'新建代办'" :visible.sync="addDialog" :close-on-click-modal="false" custom-class="dialog-type-column1" @close="closed">
         <div class="dialog-form" :v-loading="loading">
           <el-form :model="ruleForm" ref="ruleForm" :rules="rules" label-position="right" label-width="80px">
-<!--            <el-form-item label="上级部门：" prop="parentId">-->
-<!--              <el-input placeholder="请选择上级组织" v-model="ruleForm.pidLabel" :style="inputWidth" @click.native="openPidBox" style="width: 100%;"></el-input>-->
-<!--              <div class="pidList" v-show="pidBoxShow">-->
-<!--                <el-tree-->
-<!--                  ref="tree2"-->
-<!--                  :props="defaultProps"-->
-<!--                  node-key="id"-->
-<!--                  :highlight-current="true"-->
-<!--                  :expand-on-click-node="false"-->
-<!--                  :check-on-click-node="true"-->
-<!--                  :data="treeData"-->
-<!--                  @node-click="handleNodeClick2">-->
-<!--                </el-tree>-->
-<!--              </div>-->
-<!--            </el-form-item>-->
-            <el-form-item label="组织名称：" prop="deptName">
-              <el-input v-model.trim="ruleForm.deptName" :style="inputWidth" placeholder="请输入组织名称" style="width: 100%;" maxlength="32"></el-input>
+            <el-form-item label="项目名称：" prop="itemName">
+              <el-input v-model.trim="ruleForm.itemName" :style="inputWidth" placeholder="请输入标题" style="width: 100%;" maxlength="32"></el-input>
             </el-form-item>
-            <el-form-item label="组织编码：" prop="deptCode">
-              <el-input v-model.trim="ruleForm.deptCode" :style="inputWidth" placeholder="请输入组织编码" style="width: 100%;" maxlength="32"></el-input>
+            <el-form-item label="计划时间：" prop="planTime">
+              <el-date-picker
+                v-model="ruleForm.planTime"
+                type="datetime"
+                placeholder="选择时间">
+              </el-date-picker>
             </el-form-item>
-<!--            <el-form-item label="排序值：" prop="sort">-->
-<!--              <el-input v-model.number.trim="ruleForm.sort" :style="inputWidth" placeholder="请输入数字排序值：" style="width: 100%;" maxlength="9"></el-input>-->
-<!--            </el-form-item>-->
-            <el-form-item label="状态：" prop="statusCd" >
-              <el-select v-model="ruleForm.statusCd" :style="inputWidth" placeholder="请选择状态" style="width: 100%;">
-                <el-option label="启用" :value="0"></el-option>
-                <el-option label="停用" :value="1"></el-option>
+            <el-form-item label="内容：" prop="itemContent">
+              <el-input
+                type="textarea"
+                v-model="ruleForm.itemContent"
+                placeholder="请在此输入内容"
+                style="height: 100px; width: 90%"
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="是否完成：" prop="leaveTp">
+              <el-select v-model="ruleForm.isFinish" style="width: 100%" :style="inputWidth">
+                <el-option label="否" :value="0"></el-option>
+                <el-option label="是" :value="2"></el-option>
               </el-select>
-              </el-form-item>
+            </el-form-item>
           </el-form>
         </div>
         <div slot="footer" class="dialog-footer">
@@ -109,44 +88,38 @@
 
     <!--编辑弹窗-->
     <div>
-      <el-dialog :title="'组织管理-编辑'" :visible.sync="editDialog" :close-on-click-modal="false" custom-class="dialog-type-column1" @close="closed">
+      <el-dialog :title="'通知管理-编辑'" :visible.sync="editDialog" :close-on-click-modal="false" custom-class="dialog-type-column1" @close="closed">
         <div class="dialog-form" :v-loading="loading">
           <el-form :model="ruleForm" ref="ruleForm" :rules="rules" label-position="right" label-width="80px">
-<!--            <el-form-item label="上级组织：" prop="parentId">-->
-<!--              <el-input placeholder="请选择上级组织" v-model="ruleForm.pidLabel" :style="inputWidth"  @click.native="openPidBox" style="width: 100%;"></el-input>-->
-<!--              <div class="pidList" v-show="pidBoxShow">-->
-<!--                <el-tree-->
-<!--                  ref="tree2"-->
-<!--                  :props="defaultProps"-->
-<!--                  node-key="id"-->
-<!--                  :highlight-current="true"-->
-<!--                  :expand-on-click-node="false"-->
-<!--                  :check-on-click-node="true"-->
-<!--                  :data="treeData"-->
-<!--                  @node-click="handleNodeClick2">-->
-<!--                </el-tree>-->
-<!--              </div>-->
-<!--            </el-form-item>-->
-            <el-form-item label="组织名称：" prop="deptName">
-              <el-input v-model.trim="ruleForm.deptName" :style="inputWidth" placeholder="请输入组织名称" style="width: 100%;" maxlength="32"></el-input>
+            <el-form-item label="项目名称：" prop="itemName">
+              <el-input v-model.trim="ruleForm.itemName" :style="inputWidth" placeholder="请输入标题" style="width: 100%;" maxlength="32"></el-input>
             </el-form-item>
-            <el-form-item label="组织编码：" prop="deptCode">
-              <el-input v-model.trim="ruleForm.deptCode" :style="inputWidth" placeholder="请输入组织编码" style="width: 100%;" maxlength="32"></el-input>
+            <el-form-item label="计划时间：" prop="planTime">
+              <el-date-picker
+                v-model="ruleForm.planTime"
+                type="datetime"
+                placeholder="选择时间">
+              </el-date-picker>
             </el-form-item>
-<!--            <el-form-item label="排序值：" prop="sort">-->
-<!--              <el-input v-model.number.trim="ruleForm.sort" :style="inputWidth" placeholder="请输入组织名称" style="width: 100%;" maxlength="9"></el-input>-->
-<!--            </el-form-item>-->
-            <el-form-item label="状态：" prop="statusCd" >
-              <el-select v-model="ruleForm.statusCd" :style="inputWidth" placeholder="请选择状态" style="width: 100%;">
-                <el-option label="启用" :value="0"></el-option>
-                <el-option label="停用" :value="1"></el-option>
+            <el-form-item label="内容：" prop="itemContent">
+              <el-input
+                type="textarea"
+                v-model="ruleForm.itemContent"
+                placeholder="请在此输入内容"
+                style="height: 100px; width: 90%"
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="是否完成：" prop="leaveTp">
+              <el-select v-model="ruleForm.isFinish" style="width: 100%" :style="inputWidth">
+                <el-option label="否" :value="0"></el-option>
+                <el-option label="是" :value="1"></el-option>
               </el-select>
-              </el-form-item>
+            </el-form-item>
           </el-form>
         </div>
         <div slot="footer" class="dialog-footer">
           <el-button @click="editDialog = false" class="dialog_back_btn">返回</el-button>
-          <el-button type="primary" @click="editClick" class="dialog_sure_btn" :disabled="isDisable">确 定
+          <el-button type="primary" @click="editClick" class="dialog_sure_btn" :disabled="isDisable" v-if="userId == 1">确 定
           </el-button>
         </div>
       </el-dialog>
@@ -163,7 +136,7 @@
   export default {
     components: {paginationCommon},
     mixins: [tableCommonData],
-    name: "DepartmentManage",
+    name: "agencyInfoManage",
     data() {
       return {
         inputWidth:'width:500px',
@@ -172,6 +145,7 @@
         formInputWidth: this.$store.state.fromBox.formInputWidth,
         sHeight: this.$store.state.bodyBox.tableHeight,
         pidBoxShow: false,
+        userId:sessionStorage.getItem('userId'),
         selectTreeName: '',
         // 查询表单
         searchForm: {
@@ -263,6 +237,9 @@
           }
         })
       },
+      stateType:function(row){
+        return row.isFinish == '0' ? '未完成' : row.isFinish == '1' ? '已完成' : ''
+      },
       // 查询
       searchClick: function () {
         this.pagination.pageNo=1
@@ -314,9 +291,9 @@
         let that = this;
         that.tableData = [];
         // Object.assign(this.searchForm, this.pagination);
-        this.searchForm.pageNo=this.pagination.pageNo
-        this.searchForm.pageSize=this.pagination.pageSize
-        this.$axios.post('/sysDept/queryPage', this.searchForm).then(function (res) {
+        this.searchForm.pageNo=this.pagination.pageNo;
+        this.searchForm.pageSize=this.pagination.pageSize;
+        this.$axios.post('/agencyInfo/queryPage', this.searchForm).then(function (res) {
           if(res.data.code==200){
             that.tableData = res.data.data.dataList;
             that.pagination.total = res.data.data.totalCount*1;
@@ -340,7 +317,7 @@
               let params=this.ruleForm
               let that = this;
                 that.loading=true
-                this.$axios.post("/sysDept/save", params).then(function(res) {
+                this.$axios.post("/agencyInfo/save", params).then(function(res) {
                   that.loading=false
                   if(res.data.code==200) {
                     that.addDialog = false;
@@ -363,15 +340,10 @@
             }
           })
       },
-      // 编辑
+      // 修改
       editInfo(row){
         this.editDialog = true;//弹窗显示
-        // this.getTree();
         this.ruleForm=Object.assign({}, row);
-        if(row.parentId!=0){
-          let node = this.$refs.tree.getNode(row.parentId);
-          this.ruleForm.pidLabel=node.data.name
-        }
       },
       editClick(){
          this.isDisable = true;
@@ -383,11 +355,11 @@
               let params=this.ruleForm
             let that = this;
             that.loading=true
-            this.$axios.post("/sysDept/update", params).then(function(res) {
-                that.loading=false
+            this.$axios.post("/agencyInfo/update", params).then(function(res) {
+                that.loading=false;
                 if(res.data.code==200) {
                   that.$message({
-                    message: '编辑成功',
+                    message: '下载成功',
                     type: 'success',
                     duration: 1500,
                     customClass: 'xz-alert-common'
@@ -414,7 +386,7 @@
         type: "warning"
       }).then(() => {
           this.$axios
-            .post("/sysDept/delete", { id: row.id })
+            .post("/agencyInfo/delete", { id: row.id })
             .then(res => {
               if (res.data.code==200) {
                 this.$message({
@@ -440,9 +412,11 @@
         this.pagination.pageSize = msg.pageSize
         this.refreshData();
       },
-
+      leaveTp(row){
+        return row.leaveTp == '1'?'病假':row.leaveTp=='2'?'年假':row.leaveTp=='3'?'调休':row.leaveTp=='4'?'婚假':row.leaveTp=='5'?'事假':''
+      },
       stateCode(row){
-        return row.statusCd=='0'?'启用':row.statusCd=='1'?'停用':''
+        return row.type == '1'?'企业新闻':row.type=='2'?'企业招聘':row.type=='3'?'会议通知':row.type=='4'?"人事制度":"";
       },
       fommatetime: function (row) {
       var value=row.createTime

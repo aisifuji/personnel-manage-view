@@ -16,9 +16,9 @@
                   <el-button type="primary" @click="reactRecord" icon="el-icon-refresh">重置</el-button>
                 </el-form-item>
                 <el-form-item class="float-right">
-                 <span  >
-                   <el-button type="success" @click="addInfo" icon="el-icon-plus" >新增</el-button>
-                 </span>
+<!--                 <span  >-->
+<!--                   <el-button type="success" @click="addInfo" icon="el-icon-plus" >新增</el-button>-->
+<!--                 </span>-->
                 </el-form-item>
               </el-form>
             </div>
@@ -37,8 +37,8 @@
                 <el-table-column label="操作" fixed="right" align="center" width="400">
                   <template slot-scope="scope">
                     <span>
-                      <el-link type="primary" style='margin-right:2px'  @click="editInfo(scope.row)" >编辑</el-link>
-                      <el-link type="danger" style='margin-right:2px'   @click="handleDelete(scope.row)"  >删除</el-link>
+                      <el-link type="primary" style='margin-right:2px'  @click="editInfo(scope.row)" >详情</el-link>
+<!--                      <el-link type="danger" style='margin-right:2px'   @click="handleDelete(scope.row)"  >删除</el-link>-->
 <!--                      <el-link type="info" style='margin-right:2px' @click="rewritePass(scope.row)"  >修改密码</el-link>-->
 <!--                      <el-link type="info" @click="resetPass(scope.row)">重置密码</el-link>-->
                     </span>
@@ -250,8 +250,8 @@
         </div>
         <div slot="footer" class="dialog-footer">
           <el-button @click="editDialog = false" class="dialog_back_btn">返回</el-button>
-          <el-button type="primary" @click="editClick" class="dialog_sure_btn" :disabled="isDisable">确 定
-          </el-button>
+<!--          <el-button type="primary" @click="editClick" class="dialog_sure_btn" :disabled="isDisable">确 定-->
+<!--          </el-button>-->
         </div>
       </el-dialog>
     </div>
@@ -327,7 +327,7 @@
   export default {
     components: {paginationCommon,upload},
     mixins: [tableCommonData],
-    name: "UserManage",
+    name: "employeeWorkAttendanceManage",
     props: {
       isOpen:{
         type:Boolean
@@ -675,7 +675,6 @@
             }
             this.ruleForm.roleIds = roleIds;
             this.ruleForm.deptIds = deptIds;
-            this.imgList = [];
             this.imgList.push(`${API.img_url}`+data.photo);
           }
         })

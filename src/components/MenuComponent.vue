@@ -95,27 +95,20 @@ export default {
     if (this.$route.path) {
       console.log(this.menu)
       this.menu.forEach(val => {
-        val.children.forEach(item => {
-          if (item.url == this.$route.path) {
-            this.editableTab.push({
-              title: item.name,
-              name: item.url,
-              iconCls: item.iconCls
-            });
-            this.$store.commit(TYPE.editableTabs,this.editableTab);
-            this.$store.commit(TYPE.editableTabsValue,item.url);
-            // this.$axios
-            //   .post('sysResources/getButton', {id:item.id})
-            //   .then(res => {
-            //     console.log('99999988888888',res.data.data)
-            //     // if(res.code){
-            //     //
-            //     //   // this.btns = res.data.result;
-            //     // }
-            //
-            //   });
-          }
-        });
+        if(val.children){
+          val.children.forEach(item => {
+            if (item.url == this.$route.path) {
+              this.editableTab.push({
+                title: item.name,
+                name: item.url,
+                iconCls: item.iconCls
+              });
+              this.$store.commit(TYPE.editableTabs,this.editableTab);
+              this.$store.commit(TYPE.editableTabsValue,item.url);
+            }
+          });
+        }
+
       });
       // this.getBtn()
     }
