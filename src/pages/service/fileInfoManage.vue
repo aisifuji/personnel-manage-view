@@ -399,27 +399,18 @@
         var arr =  this.ruleForm.url.split('/')
         this.fileNm = arr[arr.length-1];
       },
-      downClick(){
-        this.isDisable = true;
-        setTimeout(() => {
-          this.isDisable = false;
-        }, 1500);
-            let params=this.ruleForm
+      downClick(data){
+            // let params=this.ruleForm
             let that = this;
             that.loading=true
-            this.$axios.post("/test/downloadFile", params).then(function(res) {
-              that.loading=false;
-              if(res.data.code==200) {
-                that.$message({
-                  message: '下载成功',
-                  type: 'success',
-                  duration: 1500,
-                  customClass: 'xz-alert-common'
-                });
-                that.editDialog = false; //关闭弹窗
-                that.refreshData();
-                that.getTree()
-              }
+            let filePath = data.url;
+            this.$axios.get("/common/downloadFile/", {"filePath":filePath,'flag':false},'','responseType').then(function(res) {
+              const url = window.URL.createObjectURL(new Blob([res.data]));
+              const link = document.createElement('a');
+              link.href = url;
+              link.setAttribute('download', data.url.split('/')[data.url.split('/').length-1] ); //or any other extension
+              document.body.appendChild(link);
+              link.click();
             })
       },
       editClick(){

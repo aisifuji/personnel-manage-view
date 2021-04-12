@@ -676,7 +676,7 @@
             this.ruleForm.roleIds = roleIds;
             this.ruleForm.deptIds = deptIds;
             this.imgList = [];
-            this.imgList.push(`${API.img_url}`+data.photo);
+            this.imgList.push({'name':data.id,'url':`${API.img_url}`+data.photo});
           }
         })
       },
