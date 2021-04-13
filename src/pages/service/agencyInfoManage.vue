@@ -59,6 +59,7 @@
               <el-date-picker
                 v-model="ruleForm.planTime"
                 type="datetime"
+                value-format="yyyy-MM-dd HH:mm:ss"
                 placeholder="选择时间">
               </el-date-picker>
             </el-form-item>
@@ -314,9 +315,9 @@
         }, 1500);
           this.$refs.ruleForm.validate(valid=>{
             if(valid){
-              let params=this.ruleForm
+              let params=this.ruleForm;
               let that = this;
-                that.loading=true
+                that.loading=true;
                 this.$axios.post("/agencyInfo/save", params).then(function(res) {
                   that.loading=false
                   if(res.data.code==200) {
@@ -328,7 +329,7 @@
                       customClass: 'xz-alert-common'
                     })
                     that.refreshData();
-                    that.getTree()
+                    // that.getTree()
                   }
                 })
             }else{
@@ -359,7 +360,7 @@
                 that.loading=false;
                 if(res.data.code==200) {
                   that.$message({
-                    message: '下载成功',
+                    message: '修改成功',
                     type: 'success',
                     duration: 1500,
                     customClass: 'xz-alert-common'

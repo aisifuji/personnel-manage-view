@@ -323,9 +323,9 @@
         }, 1500);
           this.$refs.ruleForm.validate(valid=>{
             if(valid){
-              let params=this.ruleForm
+              let params=this.ruleForm;
               let that = this;
-                that.loading=true
+                that.loading=true;
                 this.$axios.post("/employeeLeaveApply/save", params).then(function(res) {
                   that.loading=false
                   if(res.data.code==200) {
@@ -337,7 +337,7 @@
                       customClass: 'xz-alert-common'
                     })
                     that.refreshData();
-                    that.getTree()
+                    // that.getTree()
                   }
                 })
             }else{
