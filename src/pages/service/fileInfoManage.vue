@@ -400,7 +400,6 @@
         this.fileNm = arr[arr.length-1];
       },
       downClick(data){
-            // let params=this.ruleForm
             let that = this;
             that.loading=true
             let filePath = data.url;

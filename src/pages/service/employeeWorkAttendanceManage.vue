@@ -18,8 +18,8 @@
                 </el-form-item>
               <el-form-item class="float-right">
                 <span>
-                  <el-button type="primary" @click="addInfo"  >上班打卡</el-button>
-                  <el-button type="primary" @click="addInfo"  >下班打卡</el-button>
+                  <el-button type="primary" @click="onWork"  >上班打卡</el-button>
+                  <el-button type="primary" @click="offWork"  >下班打卡</el-button>
                 </span>
               </el-form-item>
               </el-form>
@@ -340,30 +340,71 @@
           })
       },
       // 审批
-      editInfo(row,statusCd){
+      onWork(){
         this.$confirm("是否继续?", "提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
         }).then(() => {
           this.$axios
-            .post("/employeeLeaveApply/update", { id: row.id,statusCd: statusCd})
+            .post("/employeeWorkAttendance/onWork")
             .then(res => {
               if (res.data.code==200) {
                 this.$message({
-                  message: '审批通过',
+                  message: '打卡成功',
                   type: 'success',
                   duration: 1500,
                   customClass: 'xz-alert-common'
                 });
                 this.refreshData();
+              }else {
+                this.$message({
+                  message: res.data.msg,
+                  type: 'fail',
+                  duration: 3000,
+                  customClass: 'xz-alert-common'
+                });
               }
             });
         }).catch(() => {
           this.$message({
             showClose: true,
             type: "info",
-            message: "取消审批"
+            message: "取消打卡"
+          });
+        });
+      },
+      offWork(){
+        this.$confirm("是否继续?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }).then(() => {
+          this.$axios
+            .post("/employeeWorkAttendance/offWork")
+            .then(res => {
+              if (res.data.code==200) {
+                this.$message({
+                  message: '打卡成功',
+                  type: 'success',
+                  duration: 1500,
+                  customClass: 'xz-alert-common'
+                });
+                this.refreshData();
+              }else {
+                this.$message({
+                  message: res.data.msg,
+                  type: 'fail',
+                  duration: 3000,
+                  customClass: 'xz-alert-common'
+                });
+              }
+            });
+        }).catch(() => {
+          this.$message({
+            showClose: true,
+            type: "info",
+            message: "取消打卡"
           });
         });
       },
