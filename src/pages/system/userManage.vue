@@ -603,7 +603,8 @@
         this.addDialog = true; //弹窗显示
         this.loadRoleData();
         this.loadDeptData();
-        this.ruleForm={}
+        this.ruleForm={};
+        this.imgList = [];
         this.orgNames=''
       },
       // 新增保存
@@ -676,7 +677,7 @@
             this.ruleForm.roleIds = roleIds;
             this.ruleForm.deptIds = deptIds;
             this.imgList = [];
-            this.imgList.push({'name':data.id,'url':`${API.img_url}`+data.photo});
+            this.imgList.push({'name':data.id,'url':`${API.img_url}`+'/common/showFile'+data.photo});
           }
         })
       },

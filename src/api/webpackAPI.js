@@ -2,7 +2,7 @@
 
 const base_dev = 'http://localhost:8009/';
 
-const img_url = 'http://localhost:8009/common/showFile';
+const img_url = 'http://localhost:8009';
 
 const test_prod = 'http://192.168.100.126:9120/sport-manager/'//测试环境
 

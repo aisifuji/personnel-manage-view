@@ -418,7 +418,7 @@
         type: "warning"
       }).then(() => {
           this.$axios
-            .post("/sysDept/delete", { id: row.id })
+            .post("/employeeLeaveApply/delete", { id: row.id })
             .then(res => {
               if (res.data.code==200) {
                 this.$message({
