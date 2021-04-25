@@ -402,8 +402,8 @@
       downClick(data){
             let that = this;
             that.loading=true
-            let filePath = data.url;
-            this.$axios.get("/common/downloadFile/", {"filePath":filePath,'flag':false},'','responseType').then(function(res) {
+            let fileName = data.url;
+            this.$axios.post("/common/downloadFile/", {"fileName":fileName},'','responseType').then(function(res) {
               const url = window.URL.createObjectURL(new Blob([res.data]));
               const link = document.createElement('a');
               link.href = url;
