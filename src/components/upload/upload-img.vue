@@ -108,10 +108,12 @@ export default {
         // console.log(111)
         // console.log(file) 
 
-          if(file.response.data){
-              _.pull(this.imgList,file.response.data)
-            this.$emit('success', this.imgList);
-          }
+          // if(file.response.data){
+          //     _.pull(this.imgList,file.response.data)
+          //
+          // }
+        this.imgList = [];
+        this.$emit('success', this.imgList);
       },
 
       handleSuccess(response, file, fileList){
