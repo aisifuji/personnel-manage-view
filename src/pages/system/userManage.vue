@@ -404,7 +404,7 @@
         }
       };
       return {
-        url:`${API.img_url}common/uploadFile`,
+        url:`${API.img_url}/common/uploadFile`,
         inputWidth:'width:500px',
         loading:false,
         isDisable:false,
@@ -604,7 +604,7 @@
         this.loadRoleData();
         this.loadDeptData();
         this.ruleForm={};
-        this.imgList = [];
+        // this.imgList = [];
         this.orgNames=''
       },
       // 新增保存
@@ -1157,7 +1157,7 @@
       stateType:function(row){
         return row.statusCd == '0' ? '启用' : row.statusCd == '1' ? '停用' : ''
       },
-      uploadImg(data){
+      uploadImg:function(data){
         this.ruleForm.photo=data.toString()
       },
     }
