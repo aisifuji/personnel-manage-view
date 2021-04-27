@@ -604,7 +604,7 @@
         this.loadRoleData();
         this.loadDeptData();
         this.ruleForm={};
-        // this.imgList = [];
+        this.imgList = [];
         this.orgNames=''
       },
       // 新增保存
