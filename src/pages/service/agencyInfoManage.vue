@@ -33,8 +33,8 @@
                  <el-table-column label="操作" align="center" width="200">
                   <template slot-scope="scope">
                     <span>
-                      <el-link type="danger" v-if="userId == 1" @click="editInfo(scope.row)"  >编辑</el-link>
-                      <el-link type="danger" v-if="userId == 1" @click="handleDelete(scope.row)"  >删除</el-link>
+                      <el-link type="danger" @click="editInfo(scope.row)"  >编辑</el-link>
+                      <el-link type="danger" @click="handleDelete(scope.row)"  >删除</el-link>
                     </span>
                   </template>
                 </el-table-column>
